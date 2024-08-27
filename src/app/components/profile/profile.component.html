@@ -1,0 +1,90 @@
+<div class="login-container" *ngIf="profile">
+  <div class="align-vertical-center">
+    <section class="section">
+      <div class="container">
+        <div class="cta_section mt-5">
+          <div class="row cta_content text-center">
+            <div class="d-flex justify-content-center">
+              <div class="container p-3 d-flex justify-content-center">
+                <div class="px-5 mx-5">
+                  <div class="image d-flex flex-column justify-content-center align-items-center">
+                    <div>
+                      <img src="assets/img/profile.png" height="100" width="100" />
+                    </div>
+                    <span class="name mt-3">{{profile.name}} {{profile.lastName}}</span>
+                    <span class="idd">@{{profile.username}}</span>
+                    <span class="isd">{{parseRoles()}}</span>
+                    <div class=" d-flex mt-2">
+                      <button mat-raised-button color="accent" (click)="openChangePassword(content)">
+                        Cambiar constrase&ntilde;a
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">Cambiar contraseña
+    </h1>
+    <button type="button" mat-icon-button (click)="modal.dismiss('Cross click')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Última Contraseña</mat-label>
+          <input matInput formControlName="oldPass" [type]="hideP ? 'password' : 'text'">
+          <button matSuffix mat-icon-button (click)="hideP = !hideP">
+            <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Nueva Contraseña</mat-label>
+          <input matInput formControlName="newPass" [type]="hidePc ? 'password' : 'text'">
+          <button matSuffix mat-icon-button (click)="hidePc = !hidePc">
+            <mat-icon>{{hidePc ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </form>
+    <mat-hint>Nueva contraseña: </mat-hint><br><br>
+    <mat-hint class="d-flex">
+      <mat-icon style="font-size: 18px; font-weight: bold;" [class]="hasSpecialChar ? 'ok' : 'error'">
+        {{hasSpecialChar ? 'check' : 'close'}}
+      </mat-icon> Debe contener un caracter especial.
+    </mat-hint>
+    <mat-hint class="d-flex">
+      <mat-icon style="font-size: 18px; font-weight: bold;" [class]="hasUppercaseChar ? 'ok' : 'error'">
+        {{hasUppercaseChar ? 'check' : 'close'}}
+      </mat-icon> Debe contener una letra mayuscula.
+    </mat-hint>
+    <mat-hint class="d-flex">
+      <mat-icon style="font-size: 18px; font-weight: bold;" [class]="hasNumberChar ? 'ok' : 'error'">
+        {{hasNumberChar ? 'check' : 'close'}}
+      </mat-icon> Debe contener un numero.
+    </mat-hint>
+    <mat-hint class="d-flex">
+      <mat-icon style="font-size: 18px; font-weight: bold;" [class]="minMaxChar ? 'ok' : 'error'">
+        {{minMaxChar ? 'check' : 'close'}}
+      </mat-icon> Debe tener como mínimo 8 caracteres y 16 como máximo.
+    </mat-hint>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mat-raised-button color="primary" class="btn-container" (click)="savePassword()"
+      [disabled]="(!hasSpecialChar || !hasUppercaseChar || !hasNumberChar || !minMaxChar) || formGroup.invalid">
+      <mat-icon>save</mat-icon>
+      Guardar
+    </button>
+  </div>
+</ng-template>

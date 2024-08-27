@@ -1,0 +1,85 @@
+<nav id="nav-bar" class="navbar navbar-expand-lg custom-nav navbar-light fixed-top sticky">
+  <div class="container">
+    <a class="navbar-brand logo" href="/home">
+      <img src="assets/img/logo.png" alt="" class="img-fluid logo-dark" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="mdi mdi-menu"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto" id="main_nav">
+        <li class="nav-item" style="cursor: pointer">
+          <a class="nav-link" [class.active]="getSection() == 'home'" (click)="changeOption('home')">Inicio</a>
+        </li>
+
+        <!-- Admin -->
+        <ng-container *ngIf="isLogged() && isAdmin()">
+          <li class="nav-item" style="cursor: pointer">
+            <a [matMenuTriggerFor]="menu" class="navbar-link-container pt-2">
+              Administrador
+              <mat-icon>arrow_drop_down</mat-icon>
+            </a>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item [routerLink]="['/admin/users']">
+                <mat-icon>people</mat-icon>
+                Usuarios
+              </button>
+              <button mat-menu-item [routerLink]="['/admin/regulatory/framework']">
+                <mat-icon>document_scanner</mat-icon>
+                Marcos Regulatorios
+              </button>
+            </mat-menu>
+          </li>
+        </ng-container>
+        <!-- Auditor -->
+        <ng-container *ngIf="isLogged() && isAuditor()">
+          <li class="nav-item" style="cursor: pointer">
+            <a [matMenuTriggerFor]="menu" class="navbar-link-container pt-2">
+              Auditor
+              <mat-icon>arrow_drop_down</mat-icon>
+            </a>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="navTo('auditor/regulatory/framework', 'reviewers')">
+                <mat-icon>document_scanner</mat-icon>
+                Marcos Regulatorios
+              </button>
+            </mat-menu>
+          </li>
+        </ng-container>
+      </ul>
+      <ul class="navbar-nav ml-auto" style="cursor: pointer">
+        <li class="nav-item" *ngIf="!isLogged()">
+          <a class="nav-link" [class.active]="getSection() == 'login'" [routerLink]="['login']">
+            Iniciar sesión
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isLogged()">
+          <a [matMenuTriggerFor]="menu" class="navbar-link-container active pt-1">
+            <mat-icon>person</mat-icon>
+            {{ getUsername() }}
+            <mat-icon>arrow_drop_down</mat-icon>
+          </a>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/profile']">
+              <mat-icon>account_circle</mat-icon>
+              Perfil
+            </button>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              Cerrar sesión
+            </button>
+          </mat-menu>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<ngx-spinner bdColor="rgba(43, 49, 127,0.8)" size="medium" color="#fdbf21" type="ball-clip-rotate-pulse"
+  [fullScreen]="true">
+  <p style="color: #fdbf21">Cargando...</p>
+</ngx-spinner>
+
+<router-outlet></router-outlet>
+
+<div class="footer_main_divider"></div>

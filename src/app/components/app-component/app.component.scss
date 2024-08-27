@@ -1,0 +1,29 @@
+@import "../../../assets/scss/style.scss";
+
+.navbar-link-container {
+  display: inline-flex !important;
+  align-items: flex-end !important;
+  border-radius: 4px !important;
+  font-size: 18px;
+
+  mat-icon {
+    font-size: 24px !important;
+    margin-right: 4px;
+    display: inline-flex !important;
+    align-items: flex-start !important;
+    padding-top: 0px;
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  color: $primary;
+}
+
+.content {
+  font-size: 16px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}

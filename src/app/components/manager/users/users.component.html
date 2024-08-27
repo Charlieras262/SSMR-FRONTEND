@@ -1,0 +1,237 @@
+<section class="section">
+  <div class="mx-1 px-1 mx-sm-2 px-sm-2 mx-md-3 px-md-3 mx-lg-4 px-lg-4 mx-xl-5 px-xl-5">
+    <div class="mt-5">
+      <button mat-raised-button color="accent" class="btn-rounded btn-container mr-3" [routerLink]="['/home']">
+        <mat-icon>arrow_back</mat-icon>
+        Regresar
+      </button>
+      <button mat-raised-button color="accent" class="btn-rounded btn-container" (click)="openCreateModal(create)"
+        *ngIf="userLogged?.state == 1">
+        <mat-icon>add</mat-icon>
+        Agregar
+      </button>
+      <div class="mt-4">
+        <mat-form-field appearance="outline" class="col-4 p-0">
+          <mat-label>Filtro de Busqueda</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="nit" #input />
+        </mat-form-field>
+        <div class="mat-elevation-z8 item-table">
+          <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="#">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table start">No</mat-header-cell>
+              <mat-cell *matCellDef="let item; let i = index" data-label="#">
+                {{ i + 1}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="username">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Usuario</mat-header-cell>
+              <mat-cell *matCellDef="let item" data-label="Nit">
+                {{ item.username }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Nombre</mat-header-cell>
+              <mat-cell *matCellDef="let item" data-label="Nombre">
+                {{ item.name }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Correo Electrónico
+              </mat-header-cell>
+              <mat-cell *matCellDef="let item" data-label="Usuario">
+                {{ item.email }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="workload">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Carga de Trabajo
+              </mat-header-cell>
+              <mat-cell *matCellDef="let item" data-label="Unidad">
+                {{ item.workload }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="state">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Estado</mat-header-cell>
+              <mat-cell *matCellDef="let item" data-label="Estado">
+                {{ item.state }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <mat-header-cell *matHeaderCellDef class="header-table end pl-2">Accion</mat-header-cell>
+              <mat-cell *matCellDef="let item" data-label="Acciones">
+                <button mat-icon-button (click)="openEditModal(edit, item)"
+                  *ngIf="item.username != userLogged?.username && isAdmin()">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayColumnns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumnns"></mat-row>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="pt-3 pl-4" colspan="6">No se encontraron registros para mostrar.</td>
+            </tr>
+          </mat-table>
+
+          <mat-divider></mat-divider>
+          <mat-paginator [pageSizeOptions]="[5, 10, 15, 25, 100]" [pageSize]="15"></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #create let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+      Crear Usuario
+    </h1>
+    <button type="button" mat-icon-button
+      (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset();">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="createFormGroup">
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="lastname" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="state" [value]="3">
+            <mat-option *ngFor="let item of states" [value]="item.idCatalogueChild">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="text" formControlName="email">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Roles</mat-label>
+          <mat-select formControlName="roles" multiple #rolesS>
+            <mat-select-trigger>
+              {{rolesS.value ? rolesS.value[0]?.name : ''}}
+              <span *ngIf="rolesS.value?.length > 1" class="additional-selection">
+                ({{rolesS.value.length - 1}} más)
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let item of roles" [value]="item">{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="created">
+        <mat-divider></mat-divider>
+        <br>
+        <mat-hint style="color: #2b317f;"><b>Credenciales de usuario</b></mat-hint>
+        <br><br>
+        <mat-divider></mat-divider>
+        <br>
+        <mat-hint style="font-size: 13px;">
+          <b><span class="text-danger">*</span>Nota</b>:
+          Asegúrate de copiar la información de acceso del usuario creado ahora, ya que por seguridad <b>no podrás
+            volver a verlo.</b>
+        </mat-hint>
+        <br><br>
+        <div class="row">
+          <mat-form-field appearance="outline" class="col-sm-6">
+            <mat-label>Id de usuario</mat-label>
+            <input matInput type="text" formControlName="username" readonly>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-sm-6">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="text" formControlName="pass" readonly>
+            <mat-hint>
+              La contraseña es la misma para poder ingresar tanto al sistema como a la bandeja de correo electrónico.
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mat-raised-button color="primary" class="btn-container" (click)="saveUser(0)"
+      [disabled]="createFormGroup.invalid" *ngIf="!created">
+      <mat-icon>save</mat-icon>
+      Guardar
+    </button>
+    <button type="button" mat-raised-button color="primary" class="btn-container"
+      (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset();" *ngIf="created">
+      <mat-icon>check</mat-icon>
+      Aceptar
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #edit let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+      Editar Usuario
+    </h1>
+    <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); editFormGroup.reset()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="editFormGroup">
+    <div class="modal-body">
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="lastname" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="text" formControlName="email">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="state">
+            <mat-option *ngFor="let item of states" [value]="item.idCatalogueChild">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col-sm-6">
+          <mat-label>Roles</mat-label>
+          <mat-select formControlName="roles" multiple #rolesS>
+            <mat-select-trigger>
+              {{rolesS.value ? rolesS.value[0]?.name : ''}}
+              <span *ngIf="rolesS.value?.length > 1" class="additional-selection">
+                ({{rolesS.value.length - 1}} más)
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let item of roles" [value]="item">{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <mat-checkbox class="mr-auto text-danger ml-2" color="warn" (change)="validateDeletion()" formControlName="delete"
+        *ngIf="editFormGroup.value.state == catalog.UserStatus.DELETED">
+        Eliminar <b>permanentemente</b> al usuario <b>{{user?.username}}</b>.
+      </mat-checkbox>
+      <button type="button" mat-raised-button color="primary" class="btn-container" (click)="saveUser(1)"
+        [disabled]="editFormGroup.invalid">
+        <mat-icon>save</mat-icon>
+        Guardar
+      </button>
+    </div>
+  </form>
+</ng-template>

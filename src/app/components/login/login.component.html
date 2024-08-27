@@ -1,0 +1,41 @@
+<div class="login-container">
+  <div class="align-vertical-center">
+    <section class="section">
+      <div class="container">
+        <div class="cta_section mt-5">
+          <div class="row cta_content text-center">
+            <div class="col-sm-6 d-flex justify-content-center">
+              <img src="assets/img/login.svg" style="width: 90%;">
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center mt-4">
+              <section style="width: 90%;">
+                <section>
+                  <h1 tabindex="0">Inicio de sesi&oacute;n</h1>
+                  <form [formGroup]="loginForm" class="login__container--form">
+                    <div class="input">
+                      <mat-icon class="icon">person</mat-icon>
+                      <input aria-label="Usuario" type="text" placeholder="Usuario" formControlName="email" />
+                    </div>
+                    <div class="input">
+                      <mat-icon class="icon">lock</mat-icon>
+                      <input aria-label="Contraseña" type="{{hide ? 'password' : 'text'}}"
+                        placeholder="Contrase&ntilde;a" formControlName="pass" />
+                      <button mat-icon-button (click)="hide = !hide">
+                        <mat-icon class="icon">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                      </button>
+                    </div>
+                    <button mat-raised-button color="accent" class="button" (click)="login(loginForm.value)">Iniciar
+                      sesi&oacute;n</button>
+                    <div class="login__container--remember-me justify-content-center">
+                      <a [routerLink]="['/security/recover/password']">¿Has olvidado la contraseña?</a>
+                    </div>
+                  </form>
+                </section>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  setup:
+    name: "Setup Environment"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@master
+  build:
+    name: Install and Build
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: "12.x"
+      - name: Install Angular CLI
+        run: npm install @angular/cli -g
+      - name: Build the app artifact for prod
+        env:
+            AWS_TOKEN_SECRET: ${{secrets.AWS_TOKEN_SECRET}}
+        run: |
+          npm i
+          ng build --prod
+      - name: Upload Built App Artifact
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          port: ${{ secrets.AWS_PORT }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          source: "dist"
+          target: "frontend"
+      - name: Deploy server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          port: ${{ secrets.AWS_PORT }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            cd frontend
+            sh deploy.sh

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="240px" height="160px" viewBox="0 0 240 160" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <rect width="240" height="160" id="artboard_1" />
+    <clipPath id="clip_1">
+      <use xlink:href="#artboard_1" clip-rule="evenodd" />
+    </clipPath>
+  </defs>
+  <g id="Artboard" clip-path="url(#clip_1)">
+    <g id="Group" transform="translate(9.139885 14.874359)">
+      <path d="M34 0L95 61L68 61L34 95.1256L0 62L34 62L34 0Z" transform="translate(0 36)" id="New-shape" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M0 12L46 0L34 46.5L0 12Z" transform="translate(66 49)" id="New-shape-2" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M40 28L11 0L0 38L40 28Z" transform="translate(72 18)" id="New-shape-3" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M30 0L21 29L0 7L30 0Z" transform="translate(93 15)" id="New-shape-4" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M0 7.00314L30.0135 0L21.0094 29.013L0 7.00314Z" transform="translate(119.978 24.918793)" id="New-shape-5" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M40.0179 29.013L0 40.0179L11.0049 0L40.0179 29.013Z" transform="translate(107.972626 34.92328)" id="New-shape-6" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M0 30.0135L6.00269 0L29.013 20.009L0 30.0135Z" transform="translate(155.99414 3.9093628)" id="New-shape-7" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M0 5.00224L14.9928 20.0852L21.0094 0L0 5.00224Z" transform="translate(185.10718 15.714752)" id="New-shape-8" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M0 11L16 0L18 20L0 11Z" transform="translate(204 0)" id="New-shape-9" fill="#662480" fill-rule="evenodd" stroke="none" />
+      <path d="M0 0L5.01443 0L5 33.6104L0 0Z" transform="translate(28.860107 98.01529)" id="New-shape-10" fill="#4F006E" fill-rule="evenodd" stroke="none" />
+      <path d="M0 13.5184L4.83398 13.5185L13.4723 0L0 13.5184Z" transform="translate(68.01692 83.47806)" id="New-shape-11" fill="#4F006E" fill-rule="evenodd" stroke="none" />
+    </g>
+  </g>
+</svg>

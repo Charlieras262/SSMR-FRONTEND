@@ -1,0 +1,34 @@
+<div scrollSpy [spiedTags]="['DIV']" [offset]="80" (sectionChange)="onSectionChange($event)">
+  <div id="home">
+    <section class="home_main_sec" id="home-anchor">
+      <ngb-carousel [showNavigationArrows]="false" [showNavigationIndicators]="false">
+        <ng-template ngbSlide *ngFor="let item of items">
+          <div class="d-block w-100">
+            <div class="header_content text-center">
+              <h1 class="text-capitalize mt-4 mb-0 mx-auto">
+                {{item.title}}
+              </h1>
+              <p class="mt-4 mx-auto sub_title">
+                {{item.content}}
+              </p>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+      <div class="header_content text-center">
+        <button class="btn btn-custom btn-rounded mb-0 mt-4" mat-raised-button>
+          Iniciar Ahora
+        </button>
+      </div>
+      <div class="home_mockup mx-auto">
+        <img src="assets/img/home2.svg" alt="home side images" class="img-fluid mx-auto d-block">
+      </div>
+      <div class="curv-img">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
+          <path fill="#fff" d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
+        </svg>
+      </div>
+    </section>
+    <section class="sec_divider mx-auto"></section>
+  </div>
+</div>

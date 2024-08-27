@@ -1,0 +1,56 @@
+@import "../../../assets/scss/style.scss";
+
+.login-container {
+  height: 100%;
+}
+
+h1 {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.name {
+  font-size: 22px;
+  color: $text-color;
+  font-weight: bold
+}
+
+.idd {
+  font-size: 14px;
+  font-weight: 600;
+  color: $accent;
+}
+
+.isd {
+  font-size: 14px;
+  font-weight: 600;
+  color: #E3EAFC;
+}
+
+.text span {
+  font-size: 13px;
+  color: $text-color;
+  font-weight: 500
+}
+
+.dark-modal .modal-content {
+  background-color: #292b2c;
+  color: white;
+}
+.dark-modal .close {
+  color: white;
+}
+
+mat-hint {
+  mat-icon {
+    margin-top: 1px;
+  }
+}
+
+.error{
+  color: red;
+}
+
+.ok {
+  color: green;
+}
