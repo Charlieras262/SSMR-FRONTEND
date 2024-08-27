@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sdr": {
+    "ssmr": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
             "customWebpackConfig": {
               "path": "extra-webpack.config.js"
             },
-            "outputPath": "dist/sdr",
+            "outputPath": "dist/ssmr",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -42,13 +42,13 @@
             "production": {
               "budgets": [{
                   "type": "initial",
-                  "maximumWarning": "1mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "11kb",
-                  "maximumError": "15kb"
+                  "maximumWarning": "15kb",
+                  "maximumError": "30kb"
                 }
               ],
               "fileReplacements": [{
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sdr:build:production"
+              "browserTarget": "ssmr:build:production"
             },
             "development": {
-              "browserTarget": "sdr:build:development"
+              "browserTarget": "ssmr:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sdr:build"
+            "browserTarget": "ssmr:build"
           }
         },
         "test": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "defaultProject": "sdr",
+  "defaultProject": "ssmr",
   "cli": {
     "analytics": "5c322c70-25a3-43eb-b1db-722a0024abd5"
   }

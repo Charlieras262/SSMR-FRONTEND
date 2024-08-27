@@ -34,7 +34,7 @@ jobs:
             AWS_TOKEN_SECRET: ${{secrets.AWS_TOKEN_SECRET}}
         run: |
           npm i
-          ng build --prod
+          npm run build-prod
       - name: Upload Built App Artifact
         uses: appleboy/scp-action@master
         with:
