@@ -27,11 +27,9 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: "12.x"
-      - name: Install Angular CLI
-        run: npm install @angular/cli -g
       - name: Build the app artifact for prod
         env:
-            AWS_TOKEN_SECRET: ${{secrets.AWS_TOKEN_SECRET}}
+          AWS_TOKEN_SECRET: ${{ secrets.AWS_TOKEN_SECRET }}
         run: |
           npm i
           npm run build-prod

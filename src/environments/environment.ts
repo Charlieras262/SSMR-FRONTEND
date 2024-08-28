@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   showLogs: true,
-  api: "https://refined-macaque-heartily.ngrok-free.app/api",
+  api: "http://localhost:8080/api",
   secret: "vPzV.xwyX.ytUh",
 };
 
