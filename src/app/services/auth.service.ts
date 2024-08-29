@@ -8,6 +8,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+import { RegulatoryDto } from "../models/RegulatoryDto";
 
 const jwtHelper = new JwtHelperService();
 
@@ -69,12 +70,28 @@ export class AuthService {
     );
   }
 
+  createRegulatory(usuario: RegulatoryDto) {
+    console.log(usuario)
+    return this.generalService.postData<null, RegulatoryDto>(
+      `${environment.api}/internal/regulatory/framework`,
+      usuario
+    );
+  }
+
   getUserProfile(username?: string) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/users/find`,
       username ?? this.getUserStored()?.username
     );
   }
+
+
+  getRegulatoryId(idRegulatory?: number) {
+    return this.generalService.getData<UserProfile>(
+      `${environment.api}/internal/regulatory/framework/${idRegulatory}`,
+    );
+  }
+
 
   getUsers() {
     return this.generalService.getData<UserDetail[]>(
@@ -95,6 +112,9 @@ export class AuthService {
       body
     );
   }
+
+
+
 
   deleteUser(username: string) {
     return this.generalService.deleteData(`${environment.api}/internal/users/delete`, username);
@@ -118,7 +138,7 @@ export class AuthService {
   }
 
   existingLogin() {
-    if(!this.getUserStored()) {
+    if (!this.getUserStored()) {
       this.logout();
     }
     this.generalService.postData<UserResponse, void>(`${environment.api}/external/verify/existing/login/${this.getUserStored()}`).toPromise().then(user => {
