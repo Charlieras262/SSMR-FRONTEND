@@ -1,0 +1,165 @@
+<section class="section">
+    <div class="mx-1 px-1 mx-sm-2 px-sm-2 mx-md-3 px-md-3 mx-lg-4 px-lg-4 mx-xl-5 px-xl-5">
+        <div class="mt-5">
+            <button mat-raised-button color="accent" class="btn-rounded btn-container mr-3" [routerLink]="['/home']">
+                <mat-icon>arrow_back</mat-icon>
+                Regresar
+            </button>
+            <button mat-raised-button color="accent" class="btn-rounded btn-container" (click)="openCreateModal(create)"
+                *ngIf="userLogged?.state == 1">
+                <mat-icon>add</mat-icon>
+                Agregar Empresa
+            </button>
+            <div class="mt-4">
+                <mat-form-field appearance="outline" class="col-4 p-0">
+                    <mat-label>Filtro de Busqueda</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="nit" #input />
+                </mat-form-field>
+                <div class="mat-elevation-z8">
+                    <div class="table-responsive">
+                        <table mat-table [dataSource]="dataSource" matSort >
+                            <ng-container matColumnDef="#">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table start">No</mat-header-cell>
+                                <mat-cell *matCellDef="let item; let i = index" data-label="#">
+                                    {{ i + 1}}
+                                </mat-cell>
+                            </ng-container>
+    
+                            <ng-container matColumnDef="nombre">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table pl-2">Nombre</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nit">
+                                    {{ item.nombre }}</mat-cell>
+                            </ng-container>
+    
+                            <ng-container matColumnDef="descripcion">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table pl-2">Descripción</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nombre">
+                                    {{ item.descripcion }}
+                                </mat-cell>
+                            </ng-container>
+    
+                            <ng-container matColumnDef="representante">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table pl-2">Representante</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nombre">
+                                    {{ item.representante }}
+                                </mat-cell>
+                            </ng-container>
+    
+                            <ng-container matColumnDef="action" >
+                                <mat-header-cell *matHeaderCellDef class="header-table end">Accion</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Acciones">
+                                    <button mat-icon-button (click)="openEditModal(edit, item)"
+                                        *ngIf="item.username != userLogged?.username && isAdmin()">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+    
+                            <mat-header-row *matHeaderRowDef="displayColumnns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayColumnns"></mat-row>
+    
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="pt-3 pl-4" colspan="6">No se encontraron registros para mostrar.</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <mat-divider></mat-divider>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 25, 100]" [pageSize]="15"></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #create let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+            Crear Empresa
+        </h1>
+        <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="createFormGroup">
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" type="text">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="descripcion" type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Representante</mat-label>
+                    <mat-select formControlName="representante" [value]="3">
+                        <mat-option *ngFor="let item of agent" [value]="item.username">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" mat-raised-button color="primary" class="btn-container" (click)="saveCompany(0)"
+            [disabled]="createFormGroup.invalid" *ngIf="!created">
+            <mat-icon>save</mat-icon>
+            Guardar
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #edit let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+            Editar Empresa
+        </h1>
+        <button type="button" mat-icon-button
+            (click)="modal.dismiss('Cross click'); editFormGroup.reset()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <form [formGroup]="editFormGroup">
+        <div class="modal-body">
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" type="text">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput formControlName="descripcion" type="text"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Representante</mat-label>
+                    <mat-select formControlName="representante">
+                        <mat-option *ngFor="let item of agent" [value]="item.username">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <mat-checkbox class="mr-auto text-danger ml-2" color="warn" (change)="validateDeletion()"
+                formControlName="delete" *ngIf="editFormGroup.value.state == catalog.UserStatus.DELETED">
+                Eliminar <b>permanentemente</b> al usuario <b>{{user?.username}}</b>.
+            </mat-checkbox>
+            <button type="button" mat-raised-button color="primary" class="btn-container" (click)="saveCompany(1)"
+                [disabled]="editFormGroup.invalid">
+                <mat-icon>save</mat-icon>
+                Guardar
+            </button>
+        </div>
+    </form>
+</ng-template>

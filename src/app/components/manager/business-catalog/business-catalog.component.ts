@@ -13,11 +13,11 @@ import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-manager-regulatory-framework',
-  templateUrl: './manager-regulatory-framework.component.html',
-  styleUrls: ['./manager-regulatory-framework.component.scss']
+  selector: 'app-business-catalog',
+  templateUrl: './business-catalog.component.html',
+  styleUrls: ['./business-catalog.component.scss']
 })
-export class ManagerRegulatoryFrameworkComponent implements OnInit {
+export class BusinessCatalogComponent implements OnInit {
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
@@ -28,17 +28,17 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   created = false;
   userLogged!: UserProfile;
   user?: UserProfile;
-  regulatory: any;
+  company: any;
   editFormGroup: FormGroup;
   createFormGroup: FormGroup;
-  states: any;
+  agent: any;
   roles: any;
   dataSource = new MatTableDataSource<UserDetail>();
-  inputs: string[] = []; // Array para manejar los valores de los inputs
   displayColumnns: string[] = [
     "#",
     "nombre",
     "descripcion",
+    "representante",
     "action",
   ];
 
@@ -58,19 +58,23 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
     config.size = 'lg';
     this.createFormGroup = new FormGroup({
       nombre: new FormControl(null, Validators.required),
-      descripcion: new FormControl(null, Validators.required)
+      descripcion: new FormControl(null, Validators.required),
+      representante: new FormControl(null, Validators.required)
     });
 
     this.editFormGroup = new FormGroup({
       nombre: new FormControl({ value: null, disabled: true }, Validators.required),
       descripcion: new FormControl({ value: null, disabled: false }, Validators.required),
+      representante: new FormControl(null, Validators.required)
     });
   }
 
   async ngOnInit() {
     try {
-      this.getAllRegulatory();
+      this.getAllCompany();
       this.authService.getUserProfile().toPromise().then(res => this.userLogged = res);
+      this.agent = await this.authService.getUsers().toPromise();
+      console.log(this.agent)
     } catch (error) {
       console.log(error);
     }
@@ -83,9 +87,9 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   }
 
 
-  async getAllRegulatory() {
-    const regulatory = await this.generalService.getData<any[]>(`${environment.api}/internal/regulatory/framework`).toPromise();
-    this.dataSource.data = regulatory;
+  async getAllCompany() {
+    const company = await this.generalService.getData<any[]>(`${environment.api}/internal/company`).toPromise();
+    this.dataSource.data = company;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -93,21 +97,17 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   openCreateModal(content: any) {
     console.log(content);
     this.modalService.open(content, { centered: true });
-    this.inputs = []
   }
 
   async openEditModal(content: any, item: any) {
     this.spinner.show();
     try {
-      this.regulatory = await this.authService.getRegulatoryId(item.id).toPromise();
-      console.log(this.regulatory)
+      this.company = await this.authService.getCompanyId(item.id).toPromise();
+      console.log(this.company)
       const controls = this.editFormGroup.controls;
-      controls.nombre.setValue(this.regulatory?.nombre);
-      controls.descripcion.setValue(this.regulatory?.descripcion);
-      this.regulatory.requisitos.map((item: any) => {
-        this.inputs.push(item.descripcion)
-      })
-      console.log(this.inputs)
+      controls.nombre.setValue(this.company?.nombre);
+      controls.descripcion.setValue(this.company?.descripcion);
+      controls.representante.setValue(this.company?.idRepresentante);
       this.modalService.open(content, { centered: true });
     } catch (error) {
       console.error(error);
@@ -121,32 +121,26 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
     this.spinner.hide();
   }
 
-  saveRegulatory(type: number) {
+  saveCompany(type: number) {
     this.spinner.show();
-    let numero = 0
-    let req = [{
-      descripcion: "",
-      nombre: "",
-      id: 0
-    }];
     if (this.editFormGroup.value.delete) {
       this.authService.deleteUser(this.user!.username).subscribe((res) => {
         this.spinner.hide();
         if (res) {
           Swal.fire({
             title: "¡Eliminado!",
-            text: "El marco regulatorio ha sido eliminado correctamente.",
+            text: "La empresa ha sido eliminado correctamente.",
             icon: 'success',
             confirmButtonColor: '#2b317f'
           });
           this.modalService.dismissAll();
           this.editFormGroup.reset();
           this.user = undefined;
-          this.getAllRegulatory();
+          this.getAllCompany();
         } else {
           Swal.fire({
             title: "¡Error!",
-            text: "Lo sentimos, ocurrio un error al intentar eliminar el marco regulatorio. Por favor, intenta de nuevo más tarde.",
+            text: "Lo sentimos, ocurrio un error al intentar eliminar la empresa. Por favor, intenta de nuevo más tarde.",
             icon: 'error',
             confirmButtonColor: '#2b317f'
           });
@@ -155,7 +149,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
         this.spinner.hide();
         Swal.fire({
           title: "¡Error!",
-          text: "Lo sentimos, ocurrio un error al intentar eliminar el marco regulatorio. Por favor, intenta de nuevo más tarde.",
+          text: "Lo sentimos, ocurrio un error al intentar eliminar la empresa. Por favor, intenta de nuevo más tarde.",
           icon: 'error',
           confirmButtonColor: '#2b317f'
         });
@@ -163,31 +157,20 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       return;
     }
     if (type == 1) {
-
-      req.splice(0, 1)
-      this.inputs.map((items: any) => {
-        req.push({
-          id: this.regulatory.requisitos[numero].id,
-          descripcion: items,
-          nombre: "Articulo " + (numero += 1).toString()
-        })
-      });
-      this.authService.updateRegulatory({
+      this.authService.updateCompany({
         nombre: this.editFormGroup.get("nombre")?.value,
         descripcion: this.editFormGroup.value.descripcion,
-        documento: "",
-        requisitos: req,
-      }, this.regulatory.id).toPromise().then(_ => {
+        representante: this.editFormGroup.value.representante,
+      }, this.company.id).toPromise().then(_ => {
         Swal.fire({
-          title: "Marco  actualizado con éxito",
+          title: "Empresa actualizada con éxito",
           icon: 'success',
           confirmButtonColor: '#2b317f'
         });
-        this.inputs = []
         this.modalService.dismissAll();
         this.editFormGroup.reset();
         this.user = undefined;
-        this.getAllRegulatory();
+        this.getAllCompany();
 
       }).catch((error) => {
         console.log(error);
@@ -195,35 +178,25 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
 
         Swal.fire({
           title: "¡Error!",
-          text: "Lo sentimos, ocurrio un error al intentar crear el marco regulatorio. Por favor, intenta de nuevo más tarde.",
+          text: "Lo sentimos, ocurrio un error al intentar actualizar la empresa. Por favor, intenta de nuevo más tarde.",
           icon: 'error',
           confirmButtonColor: '#2b317f'
         });
       }).finally(() => this.spinner.hide());
     } else {
-      req.splice(0, 1)
-      this.inputs.map((items: any) => {
-        req.push({
-          descripcion: items,
-          nombre: "Articulo " + (numero += 1).toString(),
-          id: 0
-        })
-      });
-      this.authService.createRegulatory({
+      this.authService.createCompany({
         nombre: this.createFormGroup.value.nombre,
         descripcion: this.createFormGroup.value.descripcion,
-        documento: "",
-        requisitos: req,
+        representante: this.createFormGroup.value.representante,
       }).toPromise().then(res => {
         Swal.fire({
-          title: "Marco Regulatorio creado con éxito",
+          title: "Empresa creada con éxito",
           icon: 'success',
           confirmButtonColor: '#2b317f'
         });
-        this.inputs = []
         this.modalService.dismissAll();
         this.editFormGroup.reset();
-        this.getAllRegulatory();
+        this.getAllCompany();
       }).catch((error) => {
         console.log(error);
 
@@ -259,20 +232,5 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
 
   isAdmin() {
     return this.authService.getUserStored()?.roles?.find(role => [Catalog.UserRoles.ROOT, Catalog.UserRoles.ADMIN].includes(role.idRole)) != null;
-  }
-
-
-  addInput(): void {
-    this.inputs.push(''); // Agrega un nuevo input vacío al array
-  }
-
-  // Método para manejar el cambio en los inputs (opcional)
-  onInputChange(index: number, value: any): void {
-    this.inputs[index] = value.target.value;
-    console.log(this.inputs)
-  }
-
-  isFormValid(): boolean {
-    return this.inputs.every(input => input.trim() !== '');
   }
 }

@@ -78,6 +78,14 @@ export class AuthService {
     );
   }
 
+  createCompany(company: any) {
+    console.log(company)
+    return this.generalService.postData<null, any>(
+      `${environment.api}/internal/company`,
+      company
+    );
+  }
+
   getUserProfile(username?: string) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/users/find`,
@@ -89,6 +97,12 @@ export class AuthService {
   getRegulatoryId(idRegulatory?: number) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/regulatory/framework/${idRegulatory}`,
+    );
+  }
+
+  getCompanyId(idCompany?: number) {
+    return this.generalService.getData<UserProfile>(
+      `${environment.api}/internal/company/${idCompany}`,
     );
   }
 
@@ -114,7 +128,19 @@ export class AuthService {
   }
 
 
+  updateRegulatory(body: any, id: any) {
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/regulatory/framework`, id,
+      body
+    );
+  }
 
+  updateCompany(body: any, id: any) {
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/company`, id,
+      body
+    );
+  } 
 
   deleteUser(username: string) {
     return this.generalService.deleteData(`${environment.api}/internal/users/delete`, username);
