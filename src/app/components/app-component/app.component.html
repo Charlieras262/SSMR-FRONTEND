@@ -29,6 +29,10 @@
                 <mat-icon>document_scanner</mat-icon>
                 Marcos Regulatorios
               </button>
+              <button mat-menu-item [routerLink]="['/admin/catalog/business']">
+                <mat-icon>business</mat-icon>
+                Catalago de Empresa
+              </button>
             </mat-menu>
           </li>
         </ng-container>
@@ -41,8 +45,8 @@
             </a>
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="navTo('auditor/regulatory/framework', 'reviewers')">
-                <mat-icon>document_scanner</mat-icon>
-                Marcos Regulatorios
+                <mat-icon>playlist_add_check</mat-icon>
+                Auditoria
               </button>
             </mat-menu>
           </li>

@@ -8,6 +8,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+import { RegulatoryDto } from "../models/RegulatoryDto";
 
 const jwtHelper = new JwtHelperService();
 
@@ -69,10 +70,55 @@ export class AuthService {
     );
   }
 
+  createRegulatory(usuario: RegulatoryDto) {
+    console.log(usuario)
+    return this.generalService.postData<null, RegulatoryDto>(
+      `${environment.api}/internal/regulatory/framework`,
+      usuario
+    );
+  }
+
+  createCompany(company: any) {
+    console.log(company)
+    return this.generalService.postData<null, any>(
+      `${environment.api}/internal/company`,
+      company
+    );
+  }
+
+
+  createAudit(audit: any) {
+    console.log(audit)
+    return this.generalService.postData<null, any>(
+      `${environment.api}/internal/audit`,
+      audit
+    );
+  }
+
+
   getUserProfile(username?: string) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/users/find`,
       username ?? this.getUserStored()?.username
+    );
+  }
+
+
+  getRegulatoryId(idRegulatory?: number) {
+    return this.generalService.getData<UserProfile>(
+      `${environment.api}/internal/regulatory/framework/${idRegulatory}`,
+    );
+  }
+
+  getCompanyId(idCompany?: number) {
+    return this.generalService.getData<UserProfile>(
+      `${environment.api}/internal/company/${idCompany}`,
+    );
+  }
+
+  getAuditId(idAudit?: number) {
+    return this.generalService.getData<UserProfile>(
+      `${environment.api}/internal/audit/${idAudit}`,
     );
   }
 
@@ -92,6 +138,38 @@ export class AuthService {
   updateUser(body: any, username: string) {
     return this.generalService.patchData(
       `${environment.api}/internal/users/edit`, username,
+      body
+    );
+  }
+
+
+  updateRegulatory(body: any, id: any) {
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/regulatory/framework`, id,
+      body
+    );
+  }
+
+  updateCompany(body: any, id: any) {
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/company`, id,
+      body
+    );
+  }
+
+  updateAudit(body: any, id: any) {
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/audit/save`, id,
+      body
+    );
+  }
+
+
+  finishAudit(body: any, id: any) {
+    console.log(body)
+    console.log(id)
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/audit/finish`, id,
       body
     );
   }
@@ -118,7 +196,7 @@ export class AuthService {
   }
 
   existingLogin() {
-    if(!this.getUserStored()) {
+    if (!this.getUserStored()) {
       this.logout();
     }
     this.generalService.postData<UserResponse, void>(`${environment.api}/external/verify/existing/login/${this.getUserStored()}`).toPromise().then(user => {

@@ -10,6 +10,7 @@ import { NotFoundPageComponent } from '../components/not-found-page/not-found-pa
 import { RecoverPasswordComponent } from '../components/recover-password/recover-password.component';
 import { ManagerRegulatoryFrameworkComponent } from "../components/manager/manager-regulatory-framework/manager-regulatory-framework.component";
 import { ReviewerRegulatoryFrameworkComponent } from "../components/reviewer/reviewer-regulatory-framework/reviewer-regulatory-framework.component";
+import { BusinessCatalogComponent } from "../components/manager/business-catalog/business-catalog.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: "security/recover/password", component: RecoverPasswordComponent, canActivate: [NoLoginGuard] },
   { path: "admin/users", component: UsersComponent, canActivate: [LoginGuard] },
   { path: "admin/regulatory/framework", component: ManagerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
+  { path: "admin/catalog/business", component: BusinessCatalogComponent, canActivate: [LoginGuard] },
   { path: "auditor/regulatory/framework", component: ReviewerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [LoginGuard] },
   { path: "**", component: NotFoundPageComponent }

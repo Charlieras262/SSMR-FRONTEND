@@ -26,6 +26,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { ManagerRegulatoryFrameworkComponent } from './components/manager/manager-regulatory-framework/manager-regulatory-framework.component';
 import { ReviewerRegulatoryFrameworkComponent } from './components/reviewer/reviewer-regulatory-framework/reviewer-regulatory-framework.component';
+import { BusinessCatalogComponent } from './components/manager/business-catalog/business-catalog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ReviewerRegulatoryFrameworkComponent } from './components/reviewer/revi
     NotFoundPageComponent,
     RecoverPasswordComponent,
     ManagerRegulatoryFrameworkComponent,
-    ReviewerRegulatoryFrameworkComponent
+    ReviewerRegulatoryFrameworkComponent,
+    BusinessCatalogComponent
   ],
   imports: [
     BrowserModule,
