@@ -6,7 +6,6 @@ import { NgbModal, NgbModalConfig } from "@ng-bootstrap/ng-bootstrap";
 import { User } from "src/app/models/UserDto";
 import { AuthService } from "src/app/services/auth.service";
 import { Catalog } from "src/app/utils/catalog";
-import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -29,7 +28,6 @@ export class AppComponent implements OnInit {
   ) {
     localStorage.setItem("section", "home");
     config.size = "lg";
-    console.log("App component loaded", environment.secret, environment.api);
   }
 
   ngOnInit() {
