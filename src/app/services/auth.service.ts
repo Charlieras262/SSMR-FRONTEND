@@ -86,6 +86,16 @@ export class AuthService {
     );
   }
 
+
+  createAudit(audit: any) {
+    console.log(audit)
+    return this.generalService.postData<null, any>(
+      `${environment.api}/internal/audit`,
+      audit
+    );
+  }
+
+
   getUserProfile(username?: string) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/users/find`,
@@ -106,6 +116,11 @@ export class AuthService {
     );
   }
 
+  getAuditId(idAudit?: number) {
+    return this.generalService.getData<UserProfile>(
+      `${environment.api}/internal/audit/${idAudit}`,
+    );
+  }
 
   getUsers() {
     return this.generalService.getData<UserDetail[]>(
@@ -140,7 +155,24 @@ export class AuthService {
       `${environment.api}/internal/company`, id,
       body
     );
-  } 
+  }
+
+  updateAudit(body: any, id: any) {
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/audit/save`, id,
+      body
+    );
+  }
+
+
+  finishAudit(body: any, id: any) {
+    console.log(body)
+    console.log(id)
+    return this.generalService.putData<any, null>(
+      `${environment.api}/internal/audit/finish`, id,
+      body
+    );
+  }
 
   deleteUser(username: string) {
     return this.generalService.deleteData(`${environment.api}/internal/users/delete`, username);
