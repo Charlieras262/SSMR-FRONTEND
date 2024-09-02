@@ -73,12 +73,13 @@ export class BusinessCatalogComponent implements OnInit {
     try {
       this.getAllCompany();
       this.authService.getUserProfile().toPromise().then(res => this.userLogged = res);
-      this.agent = await this.authService.getUsers().toPromise();
+      this.authService.getUsersCompanies().toPromise().then(res => this.agent = res);
       console.log(this.agent)
     } catch (error) {
       console.log(error);
+    } finally {
+      this.spinner.hide();
     }
-    this.spinner.hide();
   }
 
   applyFilter(event: Event) {

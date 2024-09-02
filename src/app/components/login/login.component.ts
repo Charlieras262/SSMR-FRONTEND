@@ -46,6 +46,25 @@ export class LoginComponent implements OnInit {
     this.spinner.show();
     try {
       const res = await this.authService.authUser({ password: login.pass, username: login.email }).toPromise();
+      const user = await this.authService.getUserProfile().toPromise();
+
+      if (user.state == Catalog.UserStatus.FIRST_LOGIN) {
+        Swal.fire({
+          title: "Bienvenido",
+          text: "Por favor, actualiza tu contraseña. Ya que de lo contrario, no podras acceder a la mayoría de las funciones.",
+          icon: "info",
+          confirmButtonText: "Si, ir a cambiar contraseña",
+          confirmButtonColor: "#2b317f",
+          showCancelButton: true,
+          cancelButtonText: "No, continuar",
+          cancelButtonColor: "#d33",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/profile']);
+          }
+        });
+      }
+
       if (res.roles.find(item => [Catalog.UserRoles.ROOT, Catalog.UserRoles.ADMIN].includes(item.idRole))) {
         this.redirect = this.redirect ?? '/admin/users';
         localStorage.setItem("section", "users");
@@ -61,7 +80,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.redirect]);
     } catch (error: any) {
       console.log(error);
-      
+
       if ([406, 404].includes(error.status)) {
         Swal.fire({
           title: "Credenciales invalidas",

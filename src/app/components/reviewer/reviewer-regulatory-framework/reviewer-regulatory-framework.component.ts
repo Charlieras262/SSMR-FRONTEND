@@ -82,15 +82,15 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
   async ngOnInit() {
     try {
       this.getAllAudit();
-      await this.authService.getUserProfile().toPromise().then(res => this.userLogged = res);
-      this.regulatory = await this.generalService.getData<any[]>(`${environment.api}/internal/regulatory/framework`).toPromise();
-      this.company = await this.generalService.getData<any[]>(`${environment.api}/internal/company`).toPromise();
-      console.log(this.regulatory)
-      console.log(this.company)
+      this.authService.getUserProfile().toPromise().then(res => {
+        this.userLogged = res
+        console.log(this.userLogged)
+      });
+      this.generalService.getData<any[]>(`${environment.api}/internal/regulatory/framework`).toPromise().then(res => this.regulatory = res);
+      this.generalService.getData<any[]>(`${environment.api}/internal/company`).toPromise().then(res => this.company = res);
     } catch (error) {
       console.log(error);
-    }
-    this.spinner.hide();
+    } finally { this.spinner.hide() }
   }
 
   applyFilter(event: Event) {

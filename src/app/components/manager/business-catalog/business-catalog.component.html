@@ -17,7 +17,7 @@
                 </mat-form-field>
                 <div class="mat-elevation-z8">
                     <div class="table-responsive">
-                        <table mat-table [dataSource]="dataSource" matSort >
+                        <table mat-table [dataSource]="dataSource" matSort>
                             <ng-container matColumnDef="#">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                     class="header-table start">No</mat-header-cell>
@@ -25,14 +25,14 @@
                                     {{ i + 1}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="nombre">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                     class="header-table pl-2">Nombre</mat-header-cell>
                                 <mat-cell *matCellDef="let item" data-label="Nit">
                                     {{ item.nombre }}</mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="descripcion">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                     class="header-table pl-2">Descripción</mat-header-cell>
@@ -40,7 +40,7 @@
                                     {{ item.descripcion }}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="representante">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                     class="header-table pl-2">Representante</mat-header-cell>
@@ -48,20 +48,19 @@
                                     {{ item.representante }}
                                 </mat-cell>
                             </ng-container>
-    
-                            <ng-container matColumnDef="action" >
+
+                            <ng-container matColumnDef="action">
                                 <mat-header-cell *matHeaderCellDef class="header-table end">Accion</mat-header-cell>
                                 <mat-cell *matCellDef="let item" data-label="Acciones">
-                                    <button mat-icon-button (click)="openEditModal(edit, item)"
-                                        *ngIf="item.username != userLogged?.username && isAdmin()">
+                                    <button mat-icon-button (click)="openEditModal(edit, item)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                 </mat-cell>
                             </ng-container>
-    
+
                             <mat-header-row *matHeaderRowDef="displayColumnns"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayColumnns"></mat-row>
-    
+
                             <tr class="mat-row" *matNoDataRow>
                                 <td class="pt-3 pl-4" colspan="6">No se encontraron registros para mostrar.</td>
                             </tr>
@@ -81,7 +80,8 @@
         <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
             Crear Empresa
         </h1>
-        <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset()">
+        <button type="button" mat-icon-button
+            (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset()">
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -123,8 +123,7 @@
         <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
             Editar Empresa
         </h1>
-        <button type="button" mat-icon-button
-            (click)="modal.dismiss('Cross click'); editFormGroup.reset()">
+        <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); editFormGroup.reset()">
             <mat-icon>close</mat-icon>
         </button>
     </div>

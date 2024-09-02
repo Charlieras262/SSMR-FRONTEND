@@ -6,7 +6,7 @@
         Regresar
       </button>
       <button mat-raised-button color="accent" class="btn-rounded btn-container" (click)="openCreateModal(create)"
-        *ngIf="userLogged?.state == 1">
+        *ngIf="userLogged?.state == catalog.UserStatus.ACTIVE">
         <mat-icon>add</mat-icon>
         Agregar Auditoria
       </button>
@@ -78,7 +78,7 @@
 <ng-template #create let-modal>
   <div class="modal-header">
     <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
-      Crear Empresa
+      Crear Auditoría
     </h1>
     <button type="button" mat-icon-button
       (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset()">

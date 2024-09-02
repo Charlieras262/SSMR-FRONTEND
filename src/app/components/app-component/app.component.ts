@@ -30,14 +30,26 @@ export class AppComponent implements OnInit {
     config.size = "lg";
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     document.body.addEventListener("scroll", event => this.onScroll(event));
     if (this.authService.isLoggedIn() && this.authService.getUserStored()) {
       this.authService.getUserProfile().subscribe((res) => {
-        res.email = undefined;
-        res.lastName = undefined;
-        res.name = undefined;
-        res.state = undefined;
+        if(res.state == Catalog.UserStatus.FIRST_LOGIN) {
+          Swal.fire({
+            title: "Bienvenido",
+            text: "Por favor, actualiza tu contraseña. Ya que de lo contrario, no podras acceder a la mayoría de las funciones.",
+            icon: "info",
+            confirmButtonText: "Si, ir a cambiar contraseña",
+            confirmButtonColor: "#2b317f",
+            showCancelButton: true,
+            cancelButtonText: "No, continuar",
+            cancelButtonColor: "#d33",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/profile']);
+            }
+          });
+        }
         this.authService.setUser(res as User);
       });
       this.authService.startRefreshTokenTimer();

@@ -128,6 +128,12 @@ export class AuthService {
     );
   }
 
+  getUsersCompanies() {
+    return this.generalService.getData<UserDetail[]>(
+      `${environment.api}/internal/users/find/companies`
+    );
+  }
+
   changePassword(oldPass: string, newPass: string) {
     return this.generalService.patchData(
       environment.api, 'internal/users/change/password',
@@ -199,7 +205,7 @@ export class AuthService {
     if (!this.getUserStored()) {
       this.logout();
     }
-    this.generalService.postData<UserResponse, void>(`${environment.api}/external/verify/existing/login/${this.getUserStored()}`).toPromise().then(user => {
+    this.generalService.postData<UserResponse, void>(`${environment.api}/external/verify/existing/login/${this.getUserStored().username}`).toPromise().then(user => {
       if (user && user.token) {
         this.encodeToken(user.token);
         user.token = undefined;
@@ -253,7 +259,8 @@ export class AuthService {
         new Date(new Date().getTime() + (1000 * 60 * 25)),
         "/",
         window.location.hostname,
-        true
+        false,
+        "Lax"
       );
     });
   }
