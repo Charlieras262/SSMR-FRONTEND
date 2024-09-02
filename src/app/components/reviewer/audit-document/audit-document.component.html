@@ -1,0 +1,30 @@
+
+<div class="row">
+  <!-- Se muestre documento -->
+  <div class="col-lg-12 col-ms-12">
+    <div class="pdf-body">
+      <p *ngIf="mostrarMensajeError" class="text-danger text-center">No se puede abrir una vista previa de
+        este documento.</p>
+      <ngx-extended-pdf-viewer *ngIf="mostrarPdf" src="{{docBase64}}" [showOpenFileButton]="false"
+        [showPrintButton]="false" [showBookmarkButton]="false" [showPropertiesButton]="false"
+        [showSidebarButton]="false" [useBrowserLocale]="true" [showUnverifiedSignatures]="true"
+        [showDownloadButton]="true">
+      </ngx-extended-pdf-viewer>
+
+      <div class="container">
+        <img *ngIf="mostrarImg" src={{docBase64}}>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Se muestra versiones del documento -->
+  <div class="col-lg-5 col-ms-12">
+  </div>
+</div>
+<div style="display: block;">
+  <canvas id="chartBar" style="display: none;" >{{ chartBar }}</canvas>
+</div>
+<div style="display: block;">
+  <canvas id="chartPie" style="display: none;">{{ chartPie }}</canvas>
+</div>

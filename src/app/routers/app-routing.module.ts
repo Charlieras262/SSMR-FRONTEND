@@ -11,6 +11,7 @@ import { RecoverPasswordComponent } from '../components/recover-password/recover
 import { ManagerRegulatoryFrameworkComponent } from "../components/manager/manager-regulatory-framework/manager-regulatory-framework.component";
 import { ReviewerRegulatoryFrameworkComponent } from "../components/reviewer/reviewer-regulatory-framework/reviewer-regulatory-framework.component";
 import { BusinessCatalogComponent } from "../components/manager/business-catalog/business-catalog.component";
+import { AuditDocumentComponent } from "../components/reviewer/audit-document/audit-document.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: "admin/users", component: UsersComponent, canActivate: [LoginGuard] },
   { path: "admin/regulatory/framework", component: ManagerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "admin/catalog/business", component: BusinessCatalogComponent, canActivate: [LoginGuard] },
+  { path: "auditor/document/audit", component: AuditDocumentComponent, canActivate: [LoginGuard] },
   { path: "auditor/regulatory/framework", component: ReviewerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [LoginGuard] },
   { path: "**", component: NotFoundPageComponent }

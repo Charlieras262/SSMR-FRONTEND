@@ -27,7 +27,8 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { ManagerRegulatoryFrameworkComponent } from './components/manager/manager-regulatory-framework/manager-regulatory-framework.component';
 import { ReviewerRegulatoryFrameworkComponent } from './components/reviewer/reviewer-regulatory-framework/reviewer-regulatory-framework.component';
 import { BusinessCatalogComponent } from './components/manager/business-catalog/business-catalog.component';
-
+import { AuditDocumentComponent } from './components/reviewer/audit-document/audit-document.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +43,8 @@ import { BusinessCatalogComponent } from './components/manager/business-catalog/
     RecoverPasswordComponent,
     ManagerRegulatoryFrameworkComponent,
     ReviewerRegulatoryFrameworkComponent,
-    BusinessCatalogComponent
+    BusinessCatalogComponent,
+    AuditDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ import { BusinessCatalogComponent } from './components/manager/business-catalog/
     HttpClientModule,
     NgxSpinnerModule,
     NgbModule,
-    FontAwesomeModule
+    FontAwesomeModule, 
+    NgxExtendedPdfViewerModule
   ],
   providers: [
     CookieService,

@@ -52,7 +52,7 @@
                   <button mat-icon-button (click)="openEditModal(edit, item)" *ngIf="item.estado != 'Finalizada'">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button (click)="openConsultModal(consult, item)">
+                  <button mat-icon-button (click)="openConsultModal(consult, item)" *ngIf="item.estado == 'Finalizada'">
                     <mat-icon>list_alt</mat-icon>
                   </button>
                 </mat-cell>
@@ -203,7 +203,7 @@
     <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
       Consulta de Auditoria
     </h1>
-    <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); editFormGroup.reset(); inputs = []; 
+    <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); editFormGroup.reset(); inputs = []; documentAudit = []; 
         consultFormGroup.reset();
         selectedFiles = [];
         seguirAuditori = []; ">
@@ -245,17 +245,42 @@
             <mat-option [value]="14">No Aplica</mat-option>
           </mat-select>
         </mat-form-field>
+
+
       </div>
       <mat-form-field appearance="outline" class="col-12 mt-5">
         <mat-label>Observaciones Finales</mat-label>
         <textarea matInput formControlName="observaciones" type="text"></textarea>
       </mat-form-field>
+
+      <!--  <div style="display: block;">
+        <canvas id="chartBar">{{ chartBar }}</canvas>
+      </div>
+      <div style="display: block;">
+        <canvas id="chartPie">{{ chartPie }}</canvas>
+      </div> -->
     </div>
     <div class="modal-footer">
-      <button type="button" mat-raised-button color="primary" class="btn-container" (click)="downloadAudit()">
+      <button type="button" mat-raised-button color="primary" class="btn-container"
+        (click)="openDocumentModal(document)">
         <mat-icon>download</mat-icon>
         Descargar Auditoria
       </button>
     </div>
   </form>
+</ng-template>
+
+<ng-template #document let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+      Documento de Auditoria
+    </h1>
+    <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); editFormGroup.reset();">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-audit-document *ngIf="this.mostrarVisor" [documentAudit]="documentAudit">
+    </app-audit-document>
+  </div>
 </ng-template>

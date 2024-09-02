@@ -11,6 +11,7 @@ import { GeneralService } from 'src/app/services/general.service';
 import { Catalog } from 'src/app/utils/catalog';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import { Chart, ChartType } from 'chart.js/auto';
 
 @Component({
   selector: 'app-reviewer-regulatory-framework',
@@ -34,6 +35,9 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
   consultFormGroup: FormGroup;
   regulatory: any;
   roles: any;
+  mostrarVisor = false;
+  porcentaje: any;
+  documentAudit: any = [];
   seguirAuditori: Auditoria[] = [];
   inputs: any[] = []; // Array para manejar los valores de los inputs
   dataSource = new MatTableDataSource<UserDetail>();
@@ -47,6 +51,9 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
 
   selectedFiles: FilesDto[] = [];
 
+  public chart!: Chart;
+  public chartBar!: Chart;
+  public chartPie!: Chart;
   constructor(
     private authService: AuthService,
     private generalService: GeneralService,
@@ -81,11 +88,11 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.getAllAudit();
-      this.authService.getUserProfile().toPromise().then(res => {
+      await this.authService.getUserProfile().toPromise().then(res => {
         this.userLogged = res
         console.log(this.userLogged)
       });
+      await this.getAllAudit();
       this.generalService.getData<any[]>(`${environment.api}/internal/regulatory/framework`).toPromise().then(res => this.regulatory = res);
       this.generalService.getData<any[]>(`${environment.api}/internal/company`).toPromise().then(res => this.company = res);
     } catch (error) {
@@ -100,7 +107,7 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
 
 
   async getAllAudit() {
-    const audit = await this.generalService.getData<any[]>(`${environment.api}/internal/audit`).toPromise();
+    const audit = await this.authService.getAuditUser().toPromise();
     console.log(audit)
     this.dataSource.data = audit;
     this.dataSource.paginator = this.paginator;
@@ -144,6 +151,7 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
       const controls = this.consultFormGroup.controls;
       controls.empresa.setValue(this.audit?.auditoriaDetalle.empresa);
       controls.marcoRegulatorio.setValue(this.audit?.auditoriaDetalle.marcoRegulatorio);
+      controls.observaciones.setValue(this.audit.auditoriaDetalle.observaciones)
       this.audit.marcoRegulatorio.requisitos.map((item: any) => {
         this.inputs.push({ id: item.id, nombre: item.nombre, descripcion: item.descripcion })
       })
@@ -166,6 +174,7 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
       this.authService.createAudit({
         empresa: this.createFormGroup.value.empresa,
         marcoRegulatorio: this.createFormGroup.value.marcoRegulatorio,
+        auditor: this.userLogged.username
       }).toPromise().then(res => {
         Swal.fire({
           title: "Auditoria creada con éxito",
@@ -217,10 +226,6 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
         });
       }).finally(() => this.spinner.hide());
     }
-
-
-
-
     if (type == 3) {
       this.authService.finishAudit(this.editFormGroup.value.observaciones, this.audit.auditoriaDetalle.id).toPromise().then(res => {
         Swal.fire({
@@ -279,7 +284,6 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
     return this.authService.getUserStored()?.roles?.find(role => [Catalog.UserRoles.ROOT, Catalog.UserRoles.ADMIN].includes(role.idRole)) != null;
   }
 
-
   onFileSelected(event: Event, index?: any) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -315,7 +319,6 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
           this.seguirAuditori[index].respaldo = base64String
         }
       };
-      // Puedes hacer algo con el archivo aquí, como mostrar un nombre o subirlo a un servidor
       console.log('Archivo seleccionado:', this.seguirAuditori);
     }
   }
@@ -335,7 +338,6 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
     console.log('Archivo seleccionado:', this.seguirAuditori);
   }
 
-
   async fullAudit() {
     this.audit.marcoRegulatorio.requisitos.forEach((res: any) => {
       if (res.estado != null) {
@@ -352,9 +354,166 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
     })
   }
 
-  async downloadAudit() {
-    this.consultFormGroup.reset();
+  async crearBar() {
+    const estado12 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 12).length;
+    const estado13 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 13).length;
+    const estado14 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 14).length;
+    const data = {
+      labels: ['Cumple', 'No Cumple', 'No Aplica'],
+      datasets: [{
+        label: 'Categorías',
+        data: [estado12, estado13, estado14],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+        ],
+        borderWidth: 1
+      }]
+    };
 
+    // Creamos la gráfica
+    this.chartBar = new Chart("chartBar", {
+      type: 'bar' as ChartType, // tipo de la gráfica 
+      data: data, // datos 
+      options: { // opciones de la gráfica 
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: true, // Muestra la leyenda
+            position: 'top' // Posición de la leyenda
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const label = tooltipItem.label || '';
+                const value = tooltipItem.raw || '';
+                return `${label}: ${value}`;
+              }
+            }
+          }
+        }
+      },
+    });
+    const chartImage = this.chartBar.toBase64Image();
+    console.log(chartImage)
+  }
+
+  async crearPie() {
+    this.calcularPorcentajeAceptacion();
+    console.log(this.porcentaje)
+    const aceptacion = this.porcentaje;
+    const negacion = (100 - this.porcentaje).toFixed(2)
+    const data = {
+      labels: ['Aceptación', 'No cumple'],
+      datasets: [{
+        label: 'Categorías',
+        data: [aceptacion, negacion],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    // Creamos la gráfica
+    this.chartPie = new Chart("chartPie", {
+      type: 'pie' as ChartType, // tipo de la gráfica 
+      data: data, // datos 
+      options: { // opciones de la gráfica 
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: true, // Muestra la leyenda
+            position: 'top' // Posición de la leyenda
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const label = tooltipItem.label || '';
+                const value = tooltipItem.raw || '';
+                return `${label}: ${value}`;
+              }
+            }
+          }
+        }
+      },
+    });
+    const chartImage = this.chartPie.toBase64Image();
+    console.log(chartImage)
+  }
+
+
+  async downloadAudit() {
+    this.documentAudit = [];
+    this.spinner.show()
+    console.log(this.audit)
+
+    const estado12 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 12).length;
+    const estado13 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 13).length;
+    const estado14 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 14).length;
+
+    this.calcularPorcentajeAceptacion();
+    console.log(this.porcentaje)
+    const aceptacion = this.porcentaje;
+    const negacion = (100 - this.porcentaje).toFixed(2)
+
+
+    this.documentAudit.push({
+      nombreResolucion: this.audit.auditoriaDetalle.marcoRegulatorio,
+      nombreEmpresa: this.audit.auditoriaDetalle.empresa,
+      nombreAuditor: this.audit.auditoriaDetalle.nombreAuditor,
+      observaciones: this.audit.auditoriaDetalle.observaciones == "" ? this.editFormGroup.value.observaciones : this.audit.auditoriaDetalle.observaciones,
+      estado12: estado12, estado13: estado13, estado14: estado14, aceptacion: aceptacion, negacion: negacion
+    })
+
+    this.audit.marcoRegulatorio.requisitos.forEach((res: any) => {
+      this.documentAudit.push({ descripcion: res.nombre, cumple: res.estado == 12, noCumple: res.estado == 13, noAplica: res.estado == 14 })
+    })
+    console.log(this.documentAudit)
+    this.spinner.hide()
+  }
+
+  
+  calcularPorcentajeAceptacion() {
+    const totalEvaluados = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 12 || requisito.estado === 13).length;
+    const totalCumple = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 12).length;
+    if (totalEvaluados != 0) {
+      const porcentajeAceptacion = (totalCumple / totalEvaluados) * 100;
+      this.porcentaje = porcentajeAceptacion.toFixed(2)
+    } else {
+      this.porcentaje = 0;
+    }
+    console.log(`Porcentaje de aceptación: ${this.porcentaje}% `);
+  }
+
+
+
+  async openDocumentModal(content: any) {
+    this.spinner.show()
+    // await this.crearBar();
+    //await this.crearPie();
+    await this.downloadAudit();
+    this.mostrarVisor = true;
+    this.modalService.open(content, { centered: true, size: "xl" });
   }
 }
 

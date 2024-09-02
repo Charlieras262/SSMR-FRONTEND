@@ -103,6 +103,11 @@ export class AuthService {
     );
   }
 
+  getAuditUser() {
+    return this.generalService.getData<any>(
+      `${environment.api}/internal/audit/username`,
+    );
+  }
 
   getRegulatoryId(idRegulatory?: number) {
     return this.generalService.getData<UserProfile>(
