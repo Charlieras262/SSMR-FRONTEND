@@ -1,0 +1,177 @@
+<section class="section">
+    <div class="mx-1 px-1 mx-sm-2 px-sm-2 mx-md-3 px-md-3 mx-lg-4 px-lg-4 mx-xl-5 px-xl-5">
+        <div class="mt-5">
+            <button mat-raised-button color="accent" class="btn-rounded btn-container mr-3" [routerLink]="['/home']">
+                <mat-icon>arrow_back</mat-icon>
+                Regresar
+            </button>
+            <div class="mt-4">
+                <mat-form-field appearance="outline" class="col-4 p-0">
+                    <mat-label>Filtro de Busqueda</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input />
+                </mat-form-field>
+                <div class="mat-elevation-z8">
+                    <div class="table-responsive">
+                        <table mat-table [dataSource]="dataSource" matSort>
+                            <ng-container matColumnDef="#">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table start">No</mat-header-cell>
+                                <mat-cell *matCellDef="let item; let i = index" data-label="#">
+                                    {{ i + 1}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="marcoRegulatorio">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Marco
+                                    Regulatorio</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nit">
+                                    {{ item.marcoRegulatorio }}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreAuditor">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Nombre
+                                    Auditor</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nombre">
+                                    {{ item.nombreAuditor }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="empresa">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table pl-2">Empresa</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nombre">
+                                    {{ item.empresa }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="estado">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="header-table pl-2">Estado</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Nombre">
+                                    {{ item.estado }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <mat-header-cell *matHeaderCellDef class="header-table end">Accion</mat-header-cell>
+                                <mat-cell *matCellDef="let item" data-label="Acciones">
+                                    <button mat-icon-button (click)="openConsultModal(consult, item)"
+                                        *ngIf="item.estado == 'Finalizada'">
+                                        <mat-icon>list_alt</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayColumnns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayColumnns"></mat-row>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="pt-3 pl-4" colspan="6">No se encontraron registros para mostrar.</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <mat-divider></mat-divider>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 25, 100]" [pageSize]="15"></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #consult let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+            Consulta de Auditoria
+        </h1>
+        <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); inputs = []; documentAudit = []; 
+          consultFormGroup.reset();
+          selectedFiles = [];
+          seguirAuditori = []; ">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <form [formGroup]="consultFormGroup">
+        <div class="modal-body">
+            <div class="row">
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Empresa</mat-label>
+                    <input matInput formControlName="empresa" type="text">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-sm-6">
+                    <mat-label>Marco Regulatorio</mat-label>
+                    <textarea matInput formControlName="marcoRegulatorio" type="text"></textarea>
+                </mat-form-field>
+            </div>
+            <div *ngFor="let input of inputs; let i = index" class="row">
+                <mat-expansion-panel class="mt-3 ml-3 col-7">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{inputs[i].nombre}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card>
+                        <mat-card-content class="preserve-whitespace" style="text-align: justify;">
+                            <p>{{inputs[i].descripcion}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-expansion-panel>
+
+                <mat-form-field appearance="outline" class="mt-3 col-2">
+                    <mat-label>Estado {{i + 1}}</mat-label>
+                    <mat-select [(value)]="audit.marcoRegulatorio.requisitos[i].estado" disabled>
+                        <mat-option [value]="12">Cumple</mat-option>
+                        <mat-option [value]="13">No Cumple</mat-option>
+                        <mat-option [value]="14">No Aplica</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="mt-3 col-2">
+                    <button mat-icon-button (click)="openConsultSupport(documentSupports, i)">
+                        <mat-icon>document_scanner</mat-icon>
+                    </button>
+                </div>
+
+            </div>
+            <mat-form-field appearance="outline" class="col-12 mt-5">
+                <mat-label>Observaciones Finales</mat-label>
+                <textarea matInput formControlName="observaciones" type="text"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="modal-footer">
+            <button type="button" mat-raised-button color="primary" class="btn-container"
+                (click)="openDocumentModal(document)">
+                <mat-icon>download</mat-icon>
+                Descargar Auditoria
+            </button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #document let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+            Documento de Auditoria
+        </h1>
+        <button type="button" mat-icon-button (click)="modal.dismiss('Cross click');">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-audit-document *ngIf="this.mostrarVisor" [documentAudit]="documentAudit">
+        </app-audit-document>
+    </div>
+</ng-template>
+
+
+<ng-template #documentSupports let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
+            Documento de Respaldo
+        </h1>
+        <button type="button" mat-icon-button (click)="modal.dismiss('Cross click');">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-document-supporting *ngIf="this.mostrarVisor" [documentSupport]="documentSupport">
+        </app-document-supporting>
+    </div>
+</ng-template>

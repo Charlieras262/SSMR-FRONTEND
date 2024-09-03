@@ -135,6 +135,10 @@ export class AppComponent implements OnInit {
     return this.authService.getUserStored()?.roles?.find(role => role.idRole == Catalog.UserRoles.AUDITOR) != null;
   }
 
+  isCompany() {
+    return this.authService.getUserStored()?.roles?.find(role => role.idRole == Catalog.UserRoles.INSTITUTION) != null;
+  }
+
   logout() {
     this.router.navigate(['/login']);
     this.authService.logout();

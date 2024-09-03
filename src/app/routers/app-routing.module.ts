@@ -12,6 +12,7 @@ import { ManagerRegulatoryFrameworkComponent } from "../components/manager/manag
 import { ReviewerRegulatoryFrameworkComponent } from "../components/reviewer/reviewer-regulatory-framework/reviewer-regulatory-framework.component";
 import { BusinessCatalogComponent } from "../components/manager/business-catalog/business-catalog.component";
 import { AuditDocumentComponent } from "../components/reviewer/audit-document/audit-document.component";
+import { CompanyReviewComponent } from "../components/company/company-review/company-review.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: "admin/regulatory/framework", component: ManagerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "admin/catalog/business", component: BusinessCatalogComponent, canActivate: [LoginGuard] },
   { path: "auditor/document/audit", component: AuditDocumentComponent, canActivate: [LoginGuard] },
+  { path: "company/review/framework", component: CompanyReviewComponent, canActivate: [LoginGuard] },
   { path: "auditor/regulatory/framework", component: ReviewerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [LoginGuard] },
   { path: "**", component: NotFoundPageComponent }

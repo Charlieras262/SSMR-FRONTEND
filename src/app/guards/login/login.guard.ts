@@ -49,6 +49,9 @@ export class LoginGuard implements CanActivate {
     if (path.startsWith("auditor") && user?.roles?.find(role => role.idRole == Catalog.UserRoles.AUDITOR)) {
       return true;
     }
+    if (path.startsWith("company") && user?.roles?.find(role => role.idRole == Catalog.UserRoles.INSTITUTION)) {
+      return true;
+    }
 
     this.router.navigate(["/home"]);
     AlertUtils.showToast(

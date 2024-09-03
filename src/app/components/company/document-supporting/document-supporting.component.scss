@@ -1,0 +1,225 @@
+/* Variables */
+$transition-delay: 0.3s;
+$transition-timing-function: ease;
+$sidebar-width: 330px;
+
+.botonAccion {
+    cursor: pointer;
+    margin-left: 2px;
+  }
+  
+  .pdf-body img {
+    max-width: 90%;
+    max-height: 1500px;
+    display: block;
+    margin: auto;
+  }
+
+  /* Tables */
+
+table {
+  width: 100%;
+  border-spacing: 0 8px !important;
+  background-color: transparent !important;
+  border-collapse: separate;
+}
+
+td {
+  text-align: left;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  border: solid 0px transparent;
+  margin-left: 10px !important;
+}
+
+th.mat-header-cell {
+  font-size: 14px;
+  font-weight: 300;
+  text-align: left;
+  background-color: #1369a0;
+  color: white;
+}
+
+td.mat-cell {
+  padding: 8px 0 8px 6px !important;
+}
+
+tr {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  transition: 0.2s all $transition-timing-function;
+}
+
+tbody {
+  tr:hover {
+    transform: scale(1.004) !important;
+    box-shadow: 0px 4px 8px #00000029 !important;
+    border: solid 0px transparent !important;
+  }
+
+  td:first-child {
+    padding-left: 24px !important;
+
+    .btn-container {
+      padding-left: 0px !important;
+    }
+  }
+}
+
+mat-card {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 14px !important;
+  padding: 10px;
+
+  button {
+    font-weight: normal;
+  }
+}
+
+.mat-sort-header-arrow {
+  color: white !important;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  mat-drawer {
+    width: 0px !important;
+  }
+
+  .sidenav-container {
+    mat-drawer-content {
+      margin-left: 0px !important;
+    }
+  }
+}
+
+.listaDoc:hover {
+    background-color: #f1f4ff;
+    cursor: pointer;
+}
+
+.titulo {
+    text-align: center;
+    background: #1369a0;
+    color: white;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.botones {
+    margin-left: 2%;
+    color: white;
+    background-color: #1369a0;
+}
+
+.botonesAccion {
+    height: 30px;
+    width: 34px;
+    margin-left: 5px;
+}
+
+.botonAccion {
+    cursor: pointer;
+    margin-left: 2px;
+}
+
+.barra {
+    background: white;
+}
+
+.toolbar {
+    background: #1369a0;
+    padding: 10px;
+
+    span {
+        color: white;
+    }
+}
+
+.my-icon {
+    margin: 0 7px;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.5;
+    }
+
+    &.active {
+        opacity: 0.5;
+    }
+
+    &.active:hover {
+        opacity: 1;
+    }
+}
+
+.page-num {
+    width: 50px;
+    border: 0;
+    margin-right: 2px;
+    text-align: center;
+}
+
+.searchbox {
+    width: 0;
+    opacity: 0;
+    transition: all 0.3s ease-out;
+    border: 0px;
+    padding: 0 3px;
+
+    &:focus,
+    &:active {
+        outline: 0;
+        box-shadow: none;
+    }
+}
+
+.searchbox:focus {
+    opacity: 1;
+    width: 200px;
+}
+
+.pdf-body {
+    height: 700px;
+}
+
+.pdf-body img {
+    max-width: 90%;
+    max-height: 1500px;
+    display: block;
+    margin: auto;
+}
+
+input {
+
+    &:focus,
+    &:active {
+        outline: 0;
+        box-shadow: none;
+    }
+}
+
+.outline {
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 60px 5px 5px;
+    height: 100vh;
+    width: 250px;
+    z-index: 9000;
+    box-shadow: 3px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    background: white;
+
+    ul {
+        padding-left: 25px;
+    }
+}

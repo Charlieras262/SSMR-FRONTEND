@@ -51,6 +51,21 @@
             </mat-menu>
           </li>
         </ng-container>
+
+        <ng-container *ngIf="isLogged() && isCompany()">
+          <li class="nav-item" style="cursor: pointer">
+            <a [matMenuTriggerFor]="menu" class="navbar-link-container pt-2">
+              Empresa
+              <mat-icon>arrow_drop_down</mat-icon>
+            </a>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="navTo('company/review/framework', 'reviewers')">
+                <mat-icon>playlist_add_check</mat-icon>
+                Auditorias Realizadas
+              </button>
+            </mat-menu>
+          </li>
+        </ng-container>
       </ul>
       <ul class="navbar-nav ml-auto" style="cursor: pointer">
         <li class="nav-item" *ngIf="!isLogged()">

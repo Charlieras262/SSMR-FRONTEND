@@ -29,6 +29,8 @@ import { ReviewerRegulatoryFrameworkComponent } from './components/reviewer/revi
 import { BusinessCatalogComponent } from './components/manager/business-catalog/business-catalog.component';
 import { AuditDocumentComponent } from './components/reviewer/audit-document/audit-document.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { CompanyReviewComponent } from './components/company/company-review/company-review.component';
+import { DocumentSupportingComponent } from './components/company/document-supporting/document-supporting.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +46,9 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     ManagerRegulatoryFrameworkComponent,
     ReviewerRegulatoryFrameworkComponent,
     BusinessCatalogComponent,
-    AuditDocumentComponent
+    AuditDocumentComponent,
+    CompanyReviewComponent,
+    DocumentSupportingComponent
   ],
   imports: [
     BrowserModule,

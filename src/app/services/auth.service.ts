@@ -109,6 +109,12 @@ export class AuthService {
     );
   }
 
+  getAuditCompany() {
+    return this.generalService.getData<any>(
+      `${environment.api}/internal/audit/company`,
+    );
+  }
+
   getRegulatoryId(idRegulatory?: number) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/regulatory/framework/${idRegulatory}`,

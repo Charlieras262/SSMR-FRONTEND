@@ -50,7 +50,6 @@ export class AuditDocumentComponent implements OnInit {
       await this.makePDF();
     }, 5000);
 
-    this.spinner.hide();
   }
 
 
@@ -60,7 +59,7 @@ export class AuditDocumentComponent implements OnInit {
   }
 
   public async makePDF() {
-
+    this.spinner.show()
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     const footerContent = (currentPage: any, pageCount: any) => {
       return {
@@ -264,6 +263,8 @@ export class AuditDocumentComponent implements OnInit {
 
     this.documentBlob = pdfBlob
     await this.renderDoc(pdfBlob);
+    
+    this.spinner.hide();
   }
   documentBlob: any
 
@@ -287,7 +288,6 @@ export class AuditDocumentComponent implements OnInit {
   }
 
   buildTableBody(data: any, columns: any) {
-    console.log(data)
     var body = [];
     body.push(
       [
@@ -304,7 +304,6 @@ export class AuditDocumentComponent implements OnInit {
         { text: 'NO CUMPLE', style: 'headerTable' },
         { text: 'NO APLICA', style: 'headerTable' }]);
     data.forEach((element: any) => {
-      console.log(element)
       var dataRow: any = [];
       if (element.descripcion != undefined) {
         columns.forEach((element2: any) => {
