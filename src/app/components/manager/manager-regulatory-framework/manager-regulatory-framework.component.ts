@@ -100,6 +100,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   async openEditModal(content: any, item: any) {
     this.spinner.show();
     try {
+      this.selectedFiles = [];
       this.regulatory = await this.authService.getRegulatoryId(item.id).toPromise();
       console.log(this.regulatory)
       const controls = this.editFormGroup.controls;
@@ -108,7 +109,10 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       this.regulatory.requisitos.map((item: any) => {
         this.inputs.push(item.descripcion)
       })
-      console.log(this.inputs)
+      this.selectedFiles.push({
+        name: "Archivo Cargado",
+        base64: this.regulatory.documento
+      });
       this.modalService.open(content, { centered: true });
     } catch (error) {
       console.error(error);
@@ -168,7 +172,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       req.splice(0, 1)
       this.inputs.map((items: any) => {
         req.push({
-          id: this.regulatory.requisitos[numero].id,
+          id: this.regulatory.requisitos[numero] == undefined ? 0 : this.regulatory.requisitos[numero].id,
           descripcion: items,
           nombre: "Articulo " + (numero += 1).toString()
         })
@@ -176,7 +180,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       this.authService.updateRegulatory({
         nombre: this.editFormGroup.get("nombre")?.value,
         descripcion: this.editFormGroup.value.descripcion,
-        documento: "",
+        documento: this.selectedFiles[0].base64,
         requisitos: req,
       }, this.regulatory.id).toPromise().then(_ => {
         Swal.fire({
@@ -272,7 +276,6 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   // Método para manejar el cambio en los inputs (opcional)
   onInputChange(index: number, value: any): void {
     this.inputs[index] = value.target.value;
-    console.log(this.inputs)
   }
 
   isFormValid(): boolean {
@@ -282,6 +285,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
 
 
   onFileSelected(event: Event) {
+    this.selectedFiles = [];
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const allowedMimeTypes = ['application/pdf', 'image/png', 'image/jpeg'];
@@ -303,10 +307,8 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
           base64: base64String
         });
       };
-      console.log('Archivo Files:', this.selectedFiles);
     }
   }
-
 
 }
 

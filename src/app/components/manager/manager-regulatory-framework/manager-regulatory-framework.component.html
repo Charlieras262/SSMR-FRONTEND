@@ -13,7 +13,7 @@
       <div class="mt-4">
         <mat-form-field appearance="outline" class="col-4 p-0">
           <mat-label>Filtro de Busqueda</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="nit" #input />
+          <input matInput (keyup)="applyFilter($event)" #input />
         </mat-form-field>
         <div class="mat-elevation-z8 item-table">
           <mat-table [dataSource]="dataSource" matSort>
@@ -26,7 +26,7 @@
 
             <ng-container matColumnDef="nombre">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="header-table pl-2">Nombre</mat-header-cell>
-              <mat-cell *matCellDef="let item" data-label="Nit">
+              <mat-cell *matCellDef="let item">
                 {{ item.nombre }}</mat-cell>
             </ng-container>
 
@@ -102,7 +102,7 @@
     <div class="mt-3 col-6">
       <div class="file-upload-container">
         <input type="file" (change)="onFileSelected($event)" id="fileInput" class="file-input">
-        <label  for="fileInput"  class="file-label">
+        <label for="fileInput" class="file-label">
           <mat-icon class="mt-1">upload</mat-icon>
           {{ selectedFiles[0]?.name || "Seleccionar archivo" }}
         </label>
@@ -123,12 +123,17 @@
     <h1 class="modal-title" id="modal-basic-title" style="letter-spacing: 1px; font-weight: 600;">
       Editar Marco Regulatorio
     </h1>
-    <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); editFormGroup.reset(); inputs = []; this.selectedFiles = []">
+    <button type="button" mat-icon-button
+      (click)="modal.dismiss('Cross click'); editFormGroup.reset(); inputs = []; this.selectedFiles = []">
       <mat-icon>close</mat-icon>
     </button>
   </div>
   <form [formGroup]="editFormGroup">
     <div class="modal-body">
+      <button mat-raised-button color="accent" class="btn-rounded btn-container mb-2" (click)="addInput()">
+        <mat-icon>add</mat-icon>
+        Agregar Articulo
+      </button>
       <div class="row">
         <mat-form-field appearance="outline" class="col-sm-6">
           <mat-label>Nombre</mat-label>
@@ -146,6 +151,15 @@
           <textarea matInput type="text" [value]="inputs[i]" (change)="onInputChange(i, $event)"
             placeholder="Agregar Articulo"></textarea>
         </mat-form-field>
+      </div>
+      <div class="mt-3 col-6">
+        <div class="file-upload-container">
+          <input type="file" (change)="onFileSelected($event)" id="fileInput" class="file-input">
+          <label for="fileInput" class="file-label">
+            <mat-icon class="mt-1">upload</mat-icon>
+            {{ selectedFiles[0]?.name || "Seleccionar archivo" }}
+          </label>
+        </div>
       </div>
     </div>
     <div class="modal-footer">

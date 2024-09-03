@@ -13,7 +13,7 @@
             <div class="mt-4">
                 <mat-form-field appearance="outline" class="col-4 p-0">
                     <mat-label>Filtro de Busqueda</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="nit" #input />
+                    <input matInput (keyup)="applyFilter($event)" #input />
                 </mat-form-field>
                 <div class="mat-elevation-z8">
                     <div class="table-responsive">
@@ -29,7 +29,7 @@
                             <ng-container matColumnDef="nombre">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                     class="header-table pl-2">Nombre</mat-header-cell>
-                                <mat-cell *matCellDef="let item" data-label="Nit">
+                                <mat-cell *matCellDef="let item">
                                     {{ item.nombre }}</mat-cell>
                             </ng-container>
 

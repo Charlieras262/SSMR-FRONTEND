@@ -263,7 +263,7 @@ export class AuditDocumentComponent implements OnInit {
 
     this.documentBlob = pdfBlob
     await this.renderDoc(pdfBlob);
-    
+
     this.spinner.hide();
   }
   documentBlob: any
@@ -452,6 +452,23 @@ export class AuditDocumentComponent implements OnInit {
         }
       },
     });
+
+
+
+
+    if (this.documentAudit[0].aceptacion == 0) {
+      console.log("Nivel 0 - Inexistente");
+    } else if (this.documentAudit[0].aceptacion <= 20) {
+      console.log("Nivel 1 - Inicial");
+    } else if (this.documentAudit[0].aceptacion <= 40) {
+      console.log("Nivel 2 - Repetible");
+    } else if (this.documentAudit[0].aceptacion <= 60) {
+      console.log("Nivel 3 - Definida");
+    } else if (this.documentAudit[0].aceptacion <= 80) {
+      console.log("Nivel 4 - Administrada");
+    } else {
+      console.log("Nivel 5 - Optimizada");
+    }
   }
 
 

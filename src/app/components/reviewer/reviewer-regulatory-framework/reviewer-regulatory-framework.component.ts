@@ -306,7 +306,6 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
   }
 
   onFileSelected(event: Event, index?: any) {
-    console.log(index)
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const allowedMimeTypes = ['application/pdf', 'image/png', 'image/jpeg'];
@@ -324,34 +323,27 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
       reader.onload = () => {
         const base64String = reader.result as string;
         if (this.selectedFiles[index] == undefined) {
-          console.log("push")
           this.selectedFiles.splice(index, 0, {
             name: file.name,
             base64: base64String
           })
         } else {
-          console.log("normal")
           this.selectedFiles[index].name = file.name
           this.selectedFiles[index].base64 = base64String
         }
 
         if (this.seguirAuditori[index] == undefined) {
-          console.log("push 2")
           this.seguirAuditori.splice(index, 0, {
             respaldo: base64String
           })
         } else {
-          console.log("normal 2")
           this.seguirAuditori[index].respaldo = base64String
         }
       };
-      console.log('Archivo auditoria:', this.seguirAuditori);
-      console.log('Archivo Files:', this.selectedFiles);
     }
   }
 
   onInputChangeState(index: number, value: any): void {
-    console.log(value)
     if (this.selectedFiles[index] == undefined) {
       this.seguirAuditori.splice(index, 0, {
         resultado: Number(value.value),
@@ -361,13 +353,11 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
       this.seguirAuditori[index].resultado = Number(value.value);
       this.seguirAuditori[index].requisito = this.inputs[index].id;
     }
-    console.log('Archivo seleccionado:', this.seguirAuditori);
   }
 
   async fullAudit() {
     this.audit.marcoRegulatorio.requisitos.forEach((res: any) => {
       if (res.estado != null) {
-        console.log("entre")
         this.seguirAuditori.push({
           resultado: res.estado,
           requisito: res.id,
@@ -378,15 +368,12 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
           base64: res.respaldo
         })
       }
-      console.log(this.selectedFiles)
     })
   }
 
   async fullAuditEdit() {
     this.audit.marcoRegulatorio.requisitos.forEach((res: any, index: any) => {
-      console.log(index)
       if (res.estado != null) {
-        console.log("entre")
 
         this.seguirAuditori[index] = {
           resultado: res.estado,
@@ -454,12 +441,10 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
       },
     });
     const chartImage = this.chartBar.toBase64Image();
-    console.log(chartImage)
   }
 
   async crearPie() {
     this.calcularPorcentajeAceptacion();
-    console.log(this.porcentaje)
     const aceptacion = this.porcentaje;
     const negacion = (100 - this.porcentaje).toFixed(2)
     const data = {
@@ -507,14 +492,12 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
       },
     });
     const chartImage = this.chartPie.toBase64Image();
-    console.log(chartImage)
   }
 
 
   async downloadAudit() {
     this.documentAudit = [];
     this.spinner.show()
-    console.log(this.audit)
 
     const estado12 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 12).length;
     const estado13 = this.audit.marcoRegulatorio.requisitos.filter((requisito: any) => requisito.estado === 13).length;
@@ -537,7 +520,6 @@ export class ReviewerRegulatoryFrameworkComponent implements OnInit {
     this.audit.marcoRegulatorio.requisitos.forEach((res: any) => {
       this.documentAudit.push({ descripcion: res.nombre, cumple: res.estado == 12, noCumple: res.estado == 13, noAplica: res.estado == 14 })
     })
-    console.log(this.documentAudit)
     this.spinner.hide()
   }
 
