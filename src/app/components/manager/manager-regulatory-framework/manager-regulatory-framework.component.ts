@@ -25,6 +25,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
 
   catalog = Catalog;
 
+  selectedFiles: FilesDto[] = [];
   created = false;
   userLogged!: UserProfile;
   user?: UserProfile;
@@ -184,6 +185,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
           confirmButtonColor: '#2b317f'
         });
         this.inputs = []
+        this.selectedFiles = []
         this.modalService.dismissAll();
         this.editFormGroup.reset();
         this.user = undefined;
@@ -212,7 +214,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       this.authService.createRegulatory({
         nombre: this.createFormGroup.value.nombre,
         descripcion: this.createFormGroup.value.descripcion,
-        documento: "",
+        documento: this.selectedFiles[0].base64,
         requisitos: req,
       }).toPromise().then(res => {
         Swal.fire({
@@ -221,6 +223,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
           confirmButtonColor: '#2b317f'
         });
         this.inputs = []
+        this.selectedFiles = []
         this.modalService.dismissAll();
         this.editFormGroup.reset();
         this.getAllRegulatory();
@@ -275,4 +278,40 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   isFormValid(): boolean {
     return this.inputs.every(input => input.trim() !== '');
   }
+
+
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const allowedMimeTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+      if (!allowedMimeTypes.includes(input.files[0].type)) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Archivo no permitido',
+          text: 'Por favor, selecciona un archivo PDF, PNG o JPG.',
+        });
+        return;
+      }
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.selectedFiles.push({
+          name: file.name,
+          base64: base64String
+        });
+      };
+      console.log('Archivo Files:', this.selectedFiles);
+    }
+  }
+
+
+}
+
+
+export interface FilesDto {
+  name: string;
+  base64: string;
 }
