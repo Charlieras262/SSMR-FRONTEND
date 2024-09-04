@@ -155,7 +155,7 @@
           </mat-card>
         </mat-expansion-panel>
 
-        <mat-form-field appearance="outline" class="mt-3 col-2">
+        <mat-form-field appearance="outline" class="mt-3 col-2"  *ngIf="audit.marcoRegulatorio.requisitos[i].lectura == false">
           <mat-label>Estado {{i + 1}}</mat-label>
           <mat-select [(value)]="audit.marcoRegulatorio.requisitos[i].estado"
             (selectionChange)="onInputChangeState(i,$event)">
@@ -164,7 +164,7 @@
             <mat-option [value]="14">No Aplica</mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="mt-3 col-3">
+        <div class="mt-3 col-3"  *ngIf="audit.marcoRegulatorio.requisitos[i].lectura == false">
           <div class="file-upload-container">
             <input type="file" (change)="onFileSelected($event, i)" id="fileInput{{i}}" class="file-input">
             <label for="fileInput{{i}}" class="file-label">
@@ -236,7 +236,7 @@
           </mat-card>
         </mat-expansion-panel>
 
-        <mat-form-field appearance="outline" class="mt-3 col-2">
+        <mat-form-field appearance="outline" class="mt-3 col-2" *ngIf="audit.marcoRegulatorio.requisitos[i].lectura == false  || audit.marcoRegulatorio.requisitos[i].lectura == null">
           <mat-label>Estado {{i + 1}}</mat-label>
           <mat-select [(value)]="audit.marcoRegulatorio.requisitos[i].estado"
             (selectionChange)="onInputChangeState(i,$event)" disabled>

@@ -10,7 +10,7 @@ $sidebar-width: 330px;
   
   .pdf-body img {
     max-width: 90%;
-    max-height: 1500px;
+    max-height: 700px;
     display: block;
     margin: auto;
   }
@@ -189,12 +189,12 @@ mat-card {
 }
 
 .pdf-body {
-    height: 700px;
+  min-height: 700px;
 }
 
 .pdf-body img {
     max-width: 90%;
-    max-height: 1500px;
+    max-height: 700px;
     display: block;
     margin: auto;
 }

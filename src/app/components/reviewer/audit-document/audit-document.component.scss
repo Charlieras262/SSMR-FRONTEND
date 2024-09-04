@@ -4,18 +4,18 @@ $transition-timing-function: ease;
 $sidebar-width: 330px;
 
 .botonAccion {
-    cursor: pointer;
-    margin-left: 2px;
-  }
-  
-  .pdf-body img {
-    max-width: 90%;
-    max-height: 1500px;
-    display: block;
-    margin: auto;
-  }
+  cursor: pointer;
+  margin-left: 2px;
+}
 
-  /* Tables */
+.pdf-body img {
+  max-width: 90%;
+  max-height: 700px;
+  display: block;
+  margin: auto;
+}
+
+/* Tables */
 
 table {
   width: 100%;
@@ -100,126 +100,126 @@ mat-card {
 }
 
 .listaDoc:hover {
-    background-color: #f1f4ff;
-    cursor: pointer;
+  background-color: #f1f4ff;
+  cursor: pointer;
 }
 
 .titulo {
-    text-align: center;
-    background: #1369a0;
-    color: white;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
+  text-align: center;
+  background: #1369a0;
+  color: white;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 
 .botones {
-    margin-left: 2%;
-    color: white;
-    background-color: #1369a0;
+  margin-left: 2%;
+  color: white;
+  background-color: #1369a0;
 }
 
 .botonesAccion {
-    height: 30px;
-    width: 34px;
-    margin-left: 5px;
+  height: 30px;
+  width: 34px;
+  margin-left: 5px;
 }
 
 .botonAccion {
-    cursor: pointer;
-    margin-left: 2px;
+  cursor: pointer;
+  margin-left: 2px;
 }
 
 .barra {
-    background: white;
+  background: white;
 }
 
 .toolbar {
-    background: #1369a0;
-    padding: 10px;
+  background: #1369a0;
+  padding: 10px;
 
-    span {
-        color: white;
-    }
+  span {
+    color: white;
+  }
 }
 
 .my-icon {
-    margin: 0 7px;
-    cursor: pointer;
+  margin: 0 7px;
+  cursor: pointer;
 
-    &:hover {
-        opacity: 0.5;
-    }
+  &:hover {
+    opacity: 0.5;
+  }
 
-    &.active {
-        opacity: 0.5;
-    }
+  &.active {
+    opacity: 0.5;
+  }
 
-    &.active:hover {
-        opacity: 1;
-    }
+  &.active:hover {
+    opacity: 1;
+  }
 }
 
 .page-num {
-    width: 50px;
-    border: 0;
-    margin-right: 2px;
-    text-align: center;
+  width: 50px;
+  border: 0;
+  margin-right: 2px;
+  text-align: center;
 }
 
 .searchbox {
-    width: 0;
-    opacity: 0;
-    transition: all 0.3s ease-out;
-    border: 0px;
-    padding: 0 3px;
+  width: 0;
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  border: 0px;
+  padding: 0 3px;
 
-    &:focus,
-    &:active {
-        outline: 0;
-        box-shadow: none;
-    }
+  &:focus,
+  &:active {
+    outline: 0;
+    box-shadow: none;
+  }
 }
 
 .searchbox:focus {
-    opacity: 1;
-    width: 200px;
+  opacity: 1;
+  width: 200px;
 }
 
 .pdf-body {
-    height: 700px;
+  min-height: 700px;
 }
 
 .pdf-body img {
-    max-width: 90%;
-    max-height: 1500px;
-    display: block;
-    margin: auto;
+  max-width: 90%;
+  max-height: 700px;
+  display: block;
+  margin: auto;
 }
 
 input {
 
-    &:focus,
-    &:active {
-        outline: 0;
-        box-shadow: none;
-    }
+  &:focus,
+  &:active {
+    outline: 0;
+    box-shadow: none;
+  }
 }
 
 .outline {
-    position: fixed;
-    left: 0;
-    top: 0;
-    padding: 60px 5px 5px;
-    height: 100vh;
-    width: 250px;
-    z-index: 9000;
-    box-shadow: 3px 0px 5px 0px rgba(0, 0, 0, 0.75);
-    background: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 60px 5px 5px;
+  height: 100vh;
+  width: 250px;
+  z-index: 9000;
+  box-shadow: 3px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  background: white;
 
-    ul {
-        padding-left: 25px;
-    }
+  ul {
+    padding-left: 25px;
+  }
 }

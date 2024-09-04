@@ -36,6 +36,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
   roles: any;
   dataSource = new MatTableDataSource<UserDetail>();
   inputs: string[] = []; // Array para manejar los valores de los inputs
+  checks: boolean[] = []; // Array para manejar los valores de los inputs
   displayColumnns: string[] = [
     "#",
     "nombre",
@@ -95,6 +96,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
     console.log(content);
     this.modalService.open(content, { centered: true });
     this.inputs = []
+    this.checks = []
   }
 
   async openEditModal(content: any, item: any) {
@@ -108,6 +110,9 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       controls.descripcion.setValue(this.regulatory?.descripcion);
       this.regulatory.requisitos.map((item: any) => {
         this.inputs.push(item.descripcion)
+      })
+      this.regulatory.requisitos.map((chek: any) => {
+        this.checks.push(chek.lectura)
       })
       this.selectedFiles.push({
         name: "Archivo Cargado",
@@ -130,6 +135,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
     this.spinner.show();
     let numero = 0
     let req = [{
+      lectura: false,
       descripcion: "",
       nombre: "",
       id: 0
@@ -170,11 +176,12 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
     if (type == 1) {
 
       req.splice(0, 1)
-      this.inputs.map((items: any) => {
+      this.inputs.map((items: any, index: any) => {
         req.push({
           id: this.regulatory.requisitos[numero] == undefined ? 0 : this.regulatory.requisitos[numero].id,
           descripcion: items,
-          nombre: "Articulo " + (numero += 1).toString()
+          nombre: "Articulo " + (numero += 1).toString(),
+          lectura: this.checks[index]
         })
       });
       this.authService.updateRegulatory({
@@ -189,6 +196,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
           confirmButtonColor: '#2b317f'
         });
         this.inputs = []
+        this.checks = []
         this.selectedFiles = []
         this.modalService.dismissAll();
         this.editFormGroup.reset();
@@ -208,8 +216,9 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
       }).finally(() => this.spinner.hide());
     } else {
       req.splice(0, 1)
-      this.inputs.map((items: any) => {
+      this.inputs.map((items: any, index: any) => {
         req.push({
+          lectura: this.checks[index],
           descripcion: items,
           nombre: "Articulo " + (numero += 1).toString(),
           id: 0
@@ -226,6 +235,7 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
           icon: 'success',
           confirmButtonColor: '#2b317f'
         });
+        this.checks = []
         this.inputs = []
         this.selectedFiles = []
         this.modalService.dismissAll();
@@ -271,11 +281,17 @@ export class ManagerRegulatoryFrameworkComponent implements OnInit {
 
   addInput(): void {
     this.inputs.push(''); // Agrega un nuevo input vacío al array
+    this.checks.push(false)
   }
 
   // Método para manejar el cambio en los inputs (opcional)
   onInputChange(index: number, value: any): void {
     this.inputs[index] = value.target.value;
+  }
+
+  onInputChangeCheck(index: number, value: any): void {
+    this.checks[index] = value.checked;
+    console.log(this.checks)
   }
 
   isFormValid(): boolean {

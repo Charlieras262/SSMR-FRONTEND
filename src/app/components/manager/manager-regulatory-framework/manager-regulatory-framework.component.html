@@ -69,7 +69,7 @@
       Crear Marco Regulatorio
     </h1>
     <button type="button" mat-icon-button (click)="modal.dismiss('Cross click'); created = false; createFormGroup.reset(); this.selectedFiles = []; 
-      inputs = []">
+        inputs = []; this.checks = [];">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -91,13 +91,19 @@
       </div>
     </form>
 
-    <div *ngFor="let input of inputs; let i = index">
-      <mat-form-field appearance="outline" class="col-sm-12">
+    <div *ngFor="let input of inputs; let i = index" class="d-flex align-items-center mb-3">
+      <mat-form-field appearance="outline" class="flex-grow-1 mr-4">
         <mat-label>Articulo {{i + 1}}</mat-label>
-        <textarea matInput type="text" [value]="inputs[i]" (change)="onInputChange(i, $event)"
-          placeholder="Agregar Articulo"></textarea>
+        <textarea matInput [value]="inputs[i]" (change)="onInputChange(i, $event)" placeholder="Agregar Articulo">
+        </textarea>
       </mat-form-field>
+      <div class="d-flex flex-column align-items-center">
+        <span>Lectura</span>
+        <mat-checkbox [checked]="checks[i]" (change)="onInputChangeCheck(i, $event)">
+        </mat-checkbox>
+      </div>
     </div>
+
 
     <div class="mt-3 col-6">
       <div class="file-upload-container">
@@ -124,7 +130,7 @@
       Editar Marco Regulatorio
     </h1>
     <button type="button" mat-icon-button
-      (click)="modal.dismiss('Cross click'); editFormGroup.reset(); inputs = []; this.selectedFiles = []">
+      (click)="modal.dismiss('Cross click'); editFormGroup.reset(); inputs = []; this.selectedFiles = []; this.checks = [];">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -145,13 +151,20 @@
         </mat-form-field>
 
       </div>
-      <div *ngFor="let input of inputs; let i = index">
-        <mat-form-field appearance="outline" class="col-sm-12">
+
+      <div *ngFor="let input of inputs; let i = index" class="d-flex align-items-center mb-3">
+        <mat-form-field appearance="outline" class="flex-grow-1 mr-4">
           <mat-label>Articulo {{i + 1}}</mat-label>
-          <textarea matInput type="text" [value]="inputs[i]" (change)="onInputChange(i, $event)"
-            placeholder="Agregar Articulo"></textarea>
+          <textarea matInput [value]="inputs[i]" (change)="onInputChange(i, $event)" placeholder="Agregar Articulo">
+        </textarea>
         </mat-form-field>
+        <div class="d-flex flex-column align-items-center">
+          <span>Lectura</span>
+          <mat-checkbox [checked]="checks[i]" (change)="onInputChangeCheck(i, $event)">
+          </mat-checkbox>
+        </div>
       </div>
+
       <div class="mt-3 col-6">
         <div class="file-upload-container">
           <input type="file" (change)="onFileSelected($event)" id="fileInput" class="file-input">

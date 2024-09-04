@@ -133,8 +133,9 @@ export class CompanyReviewComponent implements OnInit {
   async openConsultSupport(content: any, item: any) {
     this.spinner.show();
     this.documentSupport = [];
+    this.mostrarVisor = false;
     try {
-      this.documentSupport.push({ base64: this.audit.marcoRegulatorio.requisitos[item].respaldo })
+      await this.documentSupport.push({ base64: this.audit.marcoRegulatorio.requisitos[item].respaldo })
       this.modalService.open(content, { centered: true, size: "xl" });
       this.mostrarVisor = true;
     } catch (error) {
