@@ -24,7 +24,6 @@ const routes: Routes = [
   { path: "admin/regulatory/framework", component: ManagerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "admin/catalog/business", component: BusinessCatalogComponent, canActivate: [LoginGuard] },
   { path: "admin/report/framework", component: ReportsAuditComponent, canActivate: [LoginGuard] },
-  { path: "auditor/document/audit", component: AuditDocumentComponent, canActivate: [LoginGuard] },
   { path: "company/review/framework", component: CompanyReviewComponent, canActivate: [LoginGuard] },
   { path: "auditor/regulatory/framework", component: ReviewerRegulatoryFrameworkComponent, canActivate: [LoginGuard] },
   { path: "profile", component: ProfileComponent, canActivate: [LoginGuard] },

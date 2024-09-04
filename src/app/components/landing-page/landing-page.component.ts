@@ -1,9 +1,11 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Item } from 'src/app/models/Item';
+import { AuthService } from 'src/app/services/auth.service';
 import { GeneralService } from 'src/app/services/general.service';
+import { Catalog } from 'src/app/utils/catalog';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -20,7 +22,9 @@ export class LandingPageComponent implements AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private generalService: GeneralService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.items = [
       {
@@ -125,5 +129,20 @@ export class LandingPageComponent implements AfterViewInit {
         this.spinner.hide();
       }
     );
+  }
+
+  redirectUser() {
+    if (this.authService.isLoggedIn()) {
+      this.authService.getUserProfile().toPromise().then(res => {
+        const roles = res.roles.map(item => item.idRole);
+        const path = roles.includes(Catalog.UserRoles.ADMIN)
+          ? "/admin/regulatory/framework" : roles.includes(Catalog.UserRoles.AUDITOR)
+            ? "/auditor/regulatory/framework" : roles.includes(Catalog.UserRoles.INSTITUTION) ? "/company/review/framework" : "/home";
+
+        this.router.navigate([path]);
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }
