@@ -30,6 +30,7 @@ export class AuditDocumentComponent implements OnInit {
   public chartBar!: Chart;
   public chartPie!: Chart;
   porcentaje: any;
+  madurez: any;
   constructor(
     private _sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
@@ -202,6 +203,90 @@ export class AuditDocumentComponent implements OnInit {
           alignment: 'left',
           margin: [20, 20, 20, 20]
         },
+
+        {
+          text: "Evaluación del Nivel de Madurez de COBIT",
+          style: 'subtitulo',
+          pageBreak: 'before',
+        },
+
+
+        {
+          text: "El siguiente análisis detalla el nivel de madurez de COBIT para la empresa "
+            + this.documentAudit[0].nombreEmpresa + ", basado en el grado de cumplimiento con los artículos clave de: "
+            + this.documentAudit[0].nombreResolucion,
+          style: 'text',
+        },
+        { text: '\n', }, // Salto de línea después de la primera tabla
+
+        {
+          text: "El nivel de madurez de COBIT proporciona una visión clara sobre el estado de desarrollo y la eficacia de los procesos de gobernanza y gestión de TI en la organización. Este nivel se determina mediante un análisis exhaustivo del porcentaje de cumplimiento de los artículos evaluados, el nivel de madurez obtenido sirve como base para futuras mejoras y ajustes necesarios para elevar el nivel de madurez a una categoría superior.",
+          style: 'text',
+        },
+        { text: '\n', }, // Salto de línea después de la primera tabla
+
+        {
+          text: "Nivel de Madurez de COBIT",
+          style: 'subtitulo',
+        },
+
+        {
+          text: "En función de este porcentaje, el nivel de madurez de COBIT para la empresa " + this.documentAudit[0].nombreEmpresa + " se clasifica de la siguiente manera",
+          style: 'text',
+        },
+        { text: '\n', }, // Salto de línea después de la primera tabla
+
+        {
+          text: [
+            { text: ' -Nivel de Madurez Inexistente (0): ', bold: true },
+            '0% de cumplimiento'
+          ],
+          style: 'text',
+        },
+        {
+          text: [
+            { text: ' -Nivel de Madurez Inicial (1): ', bold: true },
+            'Menos del 20% de cumplimiento'
+          ],
+          style: 'text',
+        },
+        {
+          text: [
+            { text: ' -Nivel de Madurez Repetible (2): ', bold: true },
+            'Entre el 20% y el 40% de cumplimiento'
+          ],
+          style: 'text',
+        },
+        {
+          text: [
+            { text: ' -Nivel de Madurez Definida (3): ', bold: true },
+            'Entre el 40% y el 60% de cumplimiento'
+          ],
+          style: 'text',
+        },
+        {
+          text: [
+            { text: ' -Nivel de Madurez Administrada (4): ', bold: true },
+            'Entre el 60% y el 80% de cumplimiento'
+          ],
+          style: 'text',
+        },
+        {
+          text: [
+            { text: ' -Nivel de Madurez Optimizada (5): ', bold: true },
+            'Más del 80% de cumplimiento'
+          ],
+          style: 'text',
+        },
+        { text: '\n', }, // Salto de línea después de la primera tabla
+        {
+          text: [
+            "Dado el porcentaje de cumplimiento obtenido, de la empresa " + this.documentAudit[0].nombreEmpresa + " se encuentra en el Nivel de Madurez ",
+            { text: this.madurez, bold: true },
+          ],
+          style: 'text',
+        },
+
       ],
       defaultStyle: {
         fontSize: 5,
@@ -457,17 +542,17 @@ export class AuditDocumentComponent implements OnInit {
 
 
     if (this.documentAudit[0].aceptacion == 0) {
-      console.log("Nivel 0 - Inexistente");
+      return this.madurez = "Nivel 0 - Inexistente";
     } else if (this.documentAudit[0].aceptacion <= 20) {
-      console.log("Nivel 1 - Inicial");
+      return this.madurez = "Nivel 1 - Inicial";
     } else if (this.documentAudit[0].aceptacion <= 40) {
-      console.log("Nivel 2 - Repetible");
+      return this.madurez = "Nivel 2 - Repetible";
     } else if (this.documentAudit[0].aceptacion <= 60) {
-      console.log("Nivel 3 - Definida");
+      return this.madurez = "Nivel 3 - Definida";
     } else if (this.documentAudit[0].aceptacion <= 80) {
-      console.log("Nivel 4 - Administrada");
+      return this.madurez = "Nivel 4 - Administrada";
     } else {
-      console.log("Nivel 5 - Optimizada");
+      return this.madurez = "Nivel 5 - Optimizada";
     }
   }
 

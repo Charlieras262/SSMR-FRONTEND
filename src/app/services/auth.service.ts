@@ -115,6 +115,12 @@ export class AuthService {
     );
   }
 
+  getAuditCompanyAdmin() {
+    return this.generalService.getData<any>(
+      `${environment.api}/internal/audit/admin/`,
+    );
+  }
+   
   getRegulatoryId(idRegulatory?: number) {
     return this.generalService.getData<UserProfile>(
       `${environment.api}/internal/regulatory/framework/${idRegulatory}`,
